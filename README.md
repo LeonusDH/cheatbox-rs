@@ -4,8 +4,8 @@
 плюс режим для MOTD / приветствия при входе по SSH.
 
 - один бинарник без Python, `uv`, `rich` и `pick`; листы встроены внутрь;
-- 12 встроенных листов: из оригинала — `linux`, `docker`, `kubernetes`, `npm`, `bun`, `tmux`;
-  новые — `podman`, `git`, `systemd`, `cargo`, `gradle` (с блоком про моддинг Minecraft), `ssh`;
+- 14 встроенных листов: из оригинала — `linux`, `docker`, `kubernetes`, `npm`, `bun`, `tmux`;
+  новые — `podman`, `git`, `systemd`, `cargo`, `gradle` (с блоком про моддинг Minecraft), `ssh`, `ufw`, `nftables`;
 - формат `*.json` **полностью совместим** с оригиналом (`LOGO`, `TITLE`, `STYLE`, категории) — листы из upstream кладутся как есть;
 - разметка `rich` в логотипах: `[bold red]…[/]`, `[on blue]`, `[#ff8800]`, все 256 именованных цветов (`misty_rose3`, `navajo_white1`…);
 - подстраивается под ширину терминала (две колонки → одна), колонки всегда ровные.

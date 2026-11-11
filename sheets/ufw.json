@@ -1,0 +1,186 @@
+{
+  "LOGO": [
+    {
+      "ascii": [
+        "",
+        "[orange_red1]  |___|___|___|___|[/]",
+        "[orange_red1]  |_|___|___|___|_|[/]",
+        "[orange_red1]  |___|___|___|___|[/]",
+        "[orange_red1]  |_|___|___|___|_|[/]",
+        "[dim]   uncomplicated[/]"
+      ]
+    }
+  ],
+  "TITLE": [
+    {
+      "ascii": [
+        "   __  _________       __",
+        "  / / / / ____/ |     / /",
+        " / / / / /_   | | /| / / ",
+        "/ /_/ / __/   | |/ |/ /  ",
+        "\\____/_/      |__/|__/   "
+      ]
+    }
+  ],
+  "STYLE": {
+    "command_width": 34,
+    "outer_width": 150,
+    "primary_color": "orange_red1"
+  },
+  "Basics": [
+    {
+      "command": "sudo ufw status verbose",
+      "description": "Rules, defaults, logging level"
+    },
+    {
+      "command": "sudo ufw status numbered",
+      "description": "Rules with numbers (for delete)"
+    },
+    {
+      "command": "sudo ufw enable",
+      "description": "Turn the firewall on (persists on boot)"
+    },
+    {
+      "command": "sudo ufw disable",
+      "description": "Turn it off"
+    },
+    {
+      "command": "sudo ufw reload",
+      "description": "Reload rules"
+    },
+    {
+      "command": "sudo ufw reset",
+      "description": "Remove all rules, disable"
+    }
+  ],
+  "Defaults & Logging": [
+    {
+      "command": "ufw default deny incoming",
+      "description": "Block everything inbound by default"
+    },
+    {
+      "command": "ufw default allow outgoing",
+      "description": "Allow everything outbound"
+    },
+    {
+      "command": "ufw default deny routed",
+      "description": "Do not forward between interfaces"
+    },
+    {
+      "command": "ufw logging low|medium|high",
+      "description": "Logging level (off to disable)"
+    },
+    {
+      "command": "/var/log/ufw.log",
+      "description": "Blocked packets: \\[UFW BLOCK] lines"
+    },
+    {
+      "command": "/etc/default/ufw",
+      "description": "Settings, e.g. IPV6=yes"
+    }
+  ],
+  "Allow & Deny": [
+    {
+      "command": "ufw allow 22/tcp",
+      "description": "Allow a port"
+    },
+    {
+      "command": "ufw allow OpenSSH",
+      "description": "Allow an app profile"
+    },
+    {
+      "command": "ufw allow 25565/tcp comment 'MC'",
+      "description": "Allow with a comment"
+    },
+    {
+      "command": "ufw allow 60000:61000/udp",
+      "description": "Port range (protocol required)"
+    },
+    {
+      "command": "ufw limit ssh",
+      "description": "Rate-limit: 6+ conn in 30s blocked"
+    },
+    {
+      "command": "ufw deny 23",
+      "description": "Drop silently"
+    },
+    {
+      "command": "ufw reject 113",
+      "description": "Refuse with an error reply"
+    }
+  ],
+  "By Source & Interface": [
+    {
+      "command": "ufw allow from 203.0.113.5",
+      "description": "Trust one IP fully"
+    },
+    {
+      "command": "ufw allow from 10.0.0.0/8 to any port 22 proto tcp",
+      "description": "Port only from a subnet"
+    },
+    {
+      "command": "ufw allow in on eth0 to any port 80",
+      "description": "Only on one interface"
+    },
+    {
+      "command": "ufw deny from 198.51.100.0/24",
+      "description": "Block a subnet"
+    },
+    {
+      "command": "ufw insert 1 deny from <ip>",
+      "description": "Put rule first (first match wins)"
+    },
+    {
+      "command": "ufw allow out 53/udp",
+      "description": "Outbound rule"
+    }
+  ],
+  "Managing Rules": [
+    {
+      "command": "ufw delete 3",
+      "description": "Delete rule by number"
+    },
+    {
+      "command": "ufw delete allow 80/tcp",
+      "description": "Delete rule by spec"
+    },
+    {
+      "command": "ufw --dry-run allow 80",
+      "description": "Show what would change"
+    },
+    {
+      "command": "ufw show added",
+      "description": "Rules as you typed them"
+    },
+    {
+      "command": "ufw show listening",
+      "description": "Listening ports and matching rules"
+    },
+    {
+      "command": "ufw app list / app info <app>",
+      "description": "Application profiles"
+    }
+  ],
+  "Routing & Gotchas": [
+    {
+      "command": "ufw route allow in on wg0 out on eth0",
+      "description": "Allow forwarding (VPN, NAT)"
+    },
+    {
+      "command": "/etc/ufw/sysctl.conf",
+      "description": "Enable net/ipv4/ip_forward=1 here"
+    },
+    {
+      "command": "/etc/ufw/before.rules",
+      "description": "Raw rules, e.g. NAT *nat table"
+    },
+    {
+      "command": "docker run -p 8080:80",
+      "description": "Bypasses UFW! use 127.0.0.1:8080:80"
+    },
+    {
+      "command": "allow ssh BEFORE enable",
+      "description": "Or you lock yourself out remotely"
+    }
+  ]
+}
