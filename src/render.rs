@@ -97,8 +97,18 @@ fn panel(cat: &Category, width: usize, prim: Style, extra: usize) -> Vec<Line> {
 }
 
 fn header(sheet: &Sheet, width: usize) -> Vec<Line> {
-    let logo: Vec<Line> = sheet.logo.iter().flat_map(|l| split_lines(parse(l, Style::default()))).collect();
-    let mut title: Vec<Line> = sheet.title.iter().flat_map(|l| split_lines(parse(l, Style::default()))).collect();
+    // Parse the whole block at once (like rich): a tag may open on one line
+    // and close on another.
+    let logo: Vec<Line> = if sheet.logo.is_empty() {
+        Vec::new()
+    } else {
+        split_lines(parse(&sheet.logo.join("\n"), Style::default()))
+    };
+    let mut title: Vec<Line> = if sheet.title.is_empty() {
+        Vec::new()
+    } else {
+        split_lines(parse(&sheet.title.join("\n"), Style::default()))
+    };
     let lw = logo.iter().map(|l| markup::width(l)).max().unwrap_or(0);
     let tw = title.iter().map(|l| markup::width(l)).max().unwrap_or(0);
     if logo.is_empty() && title.is_empty() {
@@ -204,6 +214,17 @@ fn strip(s: &str) -> String {
 mod tests {
     use super::*;
     use crate::sheet;
+
+    #[test]
+    fn tags_span_logo_lines() {
+        let mut s = sheet::parse(r#"{"LOGO":[{"ascii":["[red]ab","c[/red]d"]}],"X":[]}"#).unwrap();
+        s.title.clear();
+        let lines = header(&s, 80);
+        let text: String = lines.iter().flatten().map(|c| c.ch).collect();
+        assert!(!text.contains('['), "{text}");
+        let c = lines.iter().flatten().find(|c| c.ch == 'c').unwrap();
+        assert_eq!(c.style.fg, Some(Color::Idx(1)));
+    }
 
     #[test]
     fn all_builtin_sheets_render_rectangular() {

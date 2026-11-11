@@ -3,6 +3,10 @@
 Шпаргалки «в бенто-коробке» прямо в терминале — порт [fatinul/cheatbox](https://github.com/fatinul/cheatbox) с Python на Rust,
 плюс режим для MOTD / приветствия при входе по SSH.
 
+<img width="900" src="images/linux.png">
+
+Все листы — в [PREVIEWS.md](PREVIEWS.md).
+
 - один бинарник без Python, `uv`, `rich` и `pick`; листы встроены внутрь;
 - 14 встроенных листов: из оригинала — `linux`, `docker`, `kubernetes`, `npm`, `bun`, `tmux`;
   новые — `podman`, `git`, `systemd`, `cargo`, `gradle` (с блоком про моддинг Minecraft), `ssh`, `ufw`, `nftables`;
@@ -70,6 +74,21 @@ cargo build --release
 
 Готовые бинарники для Linux (musl, x86_64/aarch64), Windows и macOS собирает workflow
 `.github/workflows/release.yml` — запускается вручную через Actions.
+
+## Превью
+
+Картинки в `images/` рисуются из настоящего вывода программы, так что после правки листа
+их достаточно перегенерировать:
+
+```
+cargo build --release
+pip install pillow
+python tools/preview.py            # все листы
+python tools/preview.py ufw git    # только некоторые
+```
+
+Шрифт ищется сам (JetBrains Mono → Cascadia Mono → Consolas → DejaVu Sans Mono), можно задать
+`--font путь.ttf`; символы, которых нет в шрифте, берутся из DejaVu Sans Mono. Размер — `--size`, плотность — `--scale`.
 
 ## Лицензия
 
