@@ -178,13 +178,20 @@ pub fn parse(src: &str, base: Style) -> Line {
     let mut i = 0;
     while i < chars.len() {
         let c = chars[i];
-        if c == '\\' && chars.get(i + 1) == Some(&'[') {
-            out.push(Cell {
-                ch: '[',
-                style: cur(&stack),
-            });
-            i += 2;
-            continue;
+        // Like rich: a run of N backslashes right before '[' prints N/2
+        // backslashes; if N is odd, the bracket itself is escaped.
+        if c == '\\' {
+            let run = chars[i..].iter().take_while(|&&x| x == '\\').count();
+            if chars.get(i + run) == Some(&'[') {
+                let style = cur(&stack);
+                out.extend(std::iter::repeat_n(Cell { ch: '\\', style }, run / 2));
+                i += run;
+                if run % 2 == 1 {
+                    out.push(Cell { ch: '[', style });
+                    i += 1;
+                }
+                continue;
+            }
         }
         if c == '[' {
             if let Some(end) = chars[i + 1..].iter().position(|&x| x == ']' || x == '[') {
@@ -360,6 +367,20 @@ mod tests {
         assert!(parse_color("misty_rose3").is_some());
         assert!(parse_color("navajo_white1").is_some());
         assert_eq!(parse_color("#ff0080"), Some(Color::Rgb(255, 0, 128)));
+    }
+
+    #[test]
+    fn backslash_runs_like_rich() {
+        // \\[/] = literal backslash, then the closing tag
+        let l = parse(r"[red]C:\\[/]x", Style::default());
+        assert_eq!(text(&l), r"C:\x");
+        assert_eq!(l[2].style.fg, Some(Color::Idx(1)));
+        assert!(l[3].style.is_plain());
+        // \[ = escaped bracket; \\\[ = backslash + escaped bracket
+        assert_eq!(text(&parse(r"\[b]", Style::default())), "[b]");
+        assert_eq!(text(&parse(r"\\\[b]", Style::default())), r"\[b]");
+        // backslashes elsewhere are untouched
+        assert_eq!(text(&parse(r"a\\b \x", Style::default())), r"a\\b \x");
     }
 
     #[test]
