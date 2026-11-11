@@ -1,0 +1,185 @@
+{
+  "LOGO": [
+    {
+      "ascii": [
+        "",
+        "  [dark_orange]o---o---o---o[/]   [dim]main[/]",
+        "  [dark_orange]     \\     /[/]",
+        "  [dark_orange]      o---o[/]       [dim]feature[/]",
+        ""
+      ]
+    }
+  ],
+  "TITLE": [
+    {
+      "ascii": [
+        "   _______ __ ",
+        "  / ____(_) /_",
+        " / / __/ / __/",
+        "/ /_/ / / /_  ",
+        "\\____/_/\\__/  "
+      ]
+    }
+  ],
+  "STYLE": {
+    "command_width": 34,
+    "outer_width": 140,
+    "primary_color": "dark_orange"
+  },
+  "Setup": [
+    {
+      "command": "git config --global user.name \"<n>\"",
+      "description": "Set your name for commits"
+    },
+    {
+      "command": "git config --global user.email \"<e>\"",
+      "description": "Set your email for commits"
+    },
+    {
+      "command": "git init",
+      "description": "Create a repository here"
+    },
+    {
+      "command": "git clone <url>",
+      "description": "Clone a repository"
+    },
+    {
+      "command": "git remote add origin <url>",
+      "description": "Add a remote"
+    },
+    {
+      "command": "git remote -v",
+      "description": "Show remotes"
+    }
+  ],
+  "Everyday": [
+    {
+      "command": "git status -sb",
+      "description": "Short status with branch info"
+    },
+    {
+      "command": "git add -p",
+      "description": "Stage changes hunk by hunk"
+    },
+    {
+      "command": "git commit -m \"<msg>\"",
+      "description": "Commit staged changes"
+    },
+    {
+      "command": "git commit --amend",
+      "description": "Edit the last commit"
+    },
+    {
+      "command": "git diff --staged",
+      "description": "Show what will be committed"
+    },
+    {
+      "command": "git log --oneline --graph --all",
+      "description": "Compact history graph"
+    }
+  ],
+  "Branches": [
+    {
+      "command": "git switch -c <b>",
+      "description": "Create and switch to a branch"
+    },
+    {
+      "command": "git switch <b>",
+      "description": "Switch branch"
+    },
+    {
+      "command": "git branch -d <b>",
+      "description": "Delete a merged branch"
+    },
+    {
+      "command": "git merge <b>",
+      "description": "Merge a branch into the current one"
+    },
+    {
+      "command": "git rebase main",
+      "description": "Replay current branch on top of main"
+    },
+    {
+      "command": "git rebase -i HEAD~3",
+      "description": "Squash/reorder/edit last 3 commits"
+    }
+  ],
+  "Remote": [
+    {
+      "command": "git fetch --prune",
+      "description": "Fetch and drop deleted remote branches"
+    },
+    {
+      "command": "git pull --rebase",
+      "description": "Pull without a merge commit"
+    },
+    {
+      "command": "git push -u origin <b>",
+      "description": "Push and set upstream"
+    },
+    {
+      "command": "git push --force-with-lease",
+      "description": "Safer force push"
+    },
+    {
+      "command": "git push origin --delete <b>",
+      "description": "Delete a remote branch"
+    },
+    {
+      "command": "git tag -a v1.0 -m \"<msg>\"",
+      "description": "Annotated tag (push: git push --tags)"
+    }
+  ],
+  "Undo": [
+    {
+      "command": "git restore <file>",
+      "description": "Discard unstaged changes in a file"
+    },
+    {
+      "command": "git restore --staged <file>",
+      "description": "Unstage a file"
+    },
+    {
+      "command": "git reset --soft HEAD~1",
+      "description": "Undo last commit, keep changes staged"
+    },
+    {
+      "command": "git revert <sha>",
+      "description": "New commit that undoes <sha>"
+    },
+    {
+      "command": "git stash / git stash pop",
+      "description": "Shelve changes and bring them back"
+    },
+    {
+      "command": "git reflog",
+      "description": "Find 'lost' commits"
+    }
+  ],
+  "Investigate": [
+    {
+      "command": "git blame <file>",
+      "description": "Who changed each line"
+    },
+    {
+      "command": "git show <sha>",
+      "description": "Show a commit"
+    },
+    {
+      "command": "git log -S \"<text>\"",
+      "description": "Commits that added/removed <text>"
+    },
+    {
+      "command": "git bisect start",
+      "description": "Binary-search the commit that broke it"
+    },
+    {
+      "command": "git cherry-pick <sha>",
+      "description": "Apply a commit onto current branch"
+    },
+    {
+      "command": "git clean -fdn",
+      "description": "Preview removal of untracked files"
+    }
+  ]
+}

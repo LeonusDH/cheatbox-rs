@@ -1,0 +1,178 @@
+{
+  "LOGO": [
+    {
+      "ascii": [
+        "",
+        "[cyan]   .--.[/]",
+        "[cyan]  /.-. '----------.[/]",
+        "[cyan]  \\'-' .--\"--\"\"-\"-'[/]",
+        "[cyan]   '--'[/]",
+        ""
+      ]
+    }
+  ],
+  "TITLE": [
+    {
+      "ascii": [
+        "   __________ __  __",
+        "  / ___/ ___// / / /",
+        "  \\__ \\\\__ \\/ /_/ / ",
+        " ___/ /__/ / __  /  ",
+        "/____/____/_/ /_/   "
+      ]
+    }
+  ],
+  "STYLE": {
+    "command_width": 32,
+    "outer_width": 135,
+    "primary_color": "cyan"
+  },
+  "Connect": [
+    {
+      "command": "ssh user@host",
+      "description": "Connect"
+    },
+    {
+      "command": "ssh -p 2222 user@host",
+      "description": "Non-default port"
+    },
+    {
+      "command": "ssh -i ~/.ssh/key user@host",
+      "description": "Use a specific key"
+    },
+    {
+      "command": "ssh host '<cmd>'",
+      "description": "Run one command remotely"
+    },
+    {
+      "command": "ssh -J jump user@host",
+      "description": "Connect through a jump host"
+    },
+    {
+      "command": "ssh -v user@host",
+      "description": "Debug connection problems"
+    }
+  ],
+  "Keys": [
+    {
+      "command": "ssh-keygen -t ed25519 -C \"<c>\"",
+      "description": "Generate a key pair"
+    },
+    {
+      "command": "ssh-copy-id user@host",
+      "description": "Install your public key on a server"
+    },
+    {
+      "command": "ssh-add ~/.ssh/key",
+      "description": "Add a key to the agent"
+    },
+    {
+      "command": "ssh-add -l",
+      "description": "Keys loaded in the agent"
+    },
+    {
+      "command": "ssh-keygen -lf <key.pub>",
+      "description": "Key fingerprint"
+    },
+    {
+      "command": "ssh-keygen -R <host>",
+      "description": "Forget a changed host key"
+    }
+  ],
+  "Tunnels": [
+    {
+      "command": "ssh -L 8080:localhost:80 host",
+      "description": "Local port -> remote port"
+    },
+    {
+      "command": "ssh -R 9000:localhost:3000 host",
+      "description": "Remote port -> local port"
+    },
+    {
+      "command": "ssh -D 1080 host",
+      "description": "SOCKS proxy through host"
+    },
+    {
+      "command": "ssh -N -f -L ...",
+      "description": "Tunnel only, in background"
+    },
+    {
+      "command": "-o ServerAliveInterval=30",
+      "description": "Keep idle connections alive"
+    }
+  ],
+  "Files": [
+    {
+      "command": "scp <file> user@host:<path>",
+      "description": "Copy a file to a server"
+    },
+    {
+      "command": "scp -r user@host:<dir> .",
+      "description": "Copy a directory from a server"
+    },
+    {
+      "command": "rsync -avz <dir>/ host:<path>",
+      "description": "Sync a directory (incremental)"
+    },
+    {
+      "command": "sftp user@host",
+      "description": "Interactive file transfer"
+    },
+    {
+      "command": "sshfs host:<path> <mnt>",
+      "description": "Mount a remote dir locally"
+    }
+  ],
+  "~/.ssh/config": [
+    {
+      "command": "Host myserver",
+      "description": "Alias: then just `ssh myserver`"
+    },
+    {
+      "command": "  HostName 203.0.113.10",
+      "description": "Real address"
+    },
+    {
+      "command": "  User <user>",
+      "description": "Default user"
+    },
+    {
+      "command": "  Port 2222",
+      "description": "Default port"
+    },
+    {
+      "command": "  IdentityFile ~/.ssh/id_ed25519",
+      "description": "Key for this host"
+    },
+    {
+      "command": "  ControlMaster auto",
+      "description": "Reuse one connection (with ControlPath)"
+    }
+  ],
+  "Server (sshd)": [
+    {
+      "command": "sudo sshd -t",
+      "description": "Validate sshd config"
+    },
+    {
+      "command": "sudo systemctl reload ssh",
+      "description": "Apply config (sshd on some distros)"
+    },
+    {
+      "command": "PasswordAuthentication no",
+      "description": "Keys only"
+    },
+    {
+      "command": "PermitRootLogin no",
+      "description": "Disable root login"
+    },
+    {
+      "command": "~/.ssh/authorized_keys",
+      "description": "Allowed public keys for a user"
+    },
+    {
+      "command": "journalctl -u ssh -f",
+      "description": "Watch login attempts"
+    }
+  ]
+}

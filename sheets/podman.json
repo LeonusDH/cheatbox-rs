@@ -1,0 +1,198 @@
+{
+  "LOGO": [
+    {
+      "ascii": [
+        "[medium_purple1] .-------------. [/]",
+        "[medium_purple1] |[/] [white]#[/] [medium_purple1]|[/] [white]#[/] [medium_purple1]|[/] [white]#[/] [medium_purple1]|[/]",
+        "[medium_purple1] |---+---+---| [/]",
+        "[medium_purple1] |[/] [white]#[/] [medium_purple1]|[/] [white]#[/] [medium_purple1]|[/] [white]#[/] [medium_purple1]|[/]",
+        "[medium_purple1] '-------------' [/]",
+        "[dim]   rootless pod[/]"
+      ]
+    }
+  ],
+  "TITLE": [
+    {
+      "ascii": [
+        "    ____            __                    ",
+        "   / __ \\____  ____/ /___ ___  ____ _____ ",
+        "  / /_/ / __ \\/ __  / __ `__ \\/ __ `/ __ \\",
+        " / ____/ /_/ / /_/ / / / / / / /_/ / / / /",
+        "/_/    \\____/\\__,_/_/ /_/ /_/\\__,_/_/ /_/ "
+      ]
+    }
+  ],
+  "STYLE": {
+    "command_width": 34,
+    "outer_width": 145,
+    "primary_color": "medium_purple1"
+  },
+  "Containers": [
+    {
+      "command": "podman run -d --name <n> <img>",
+      "description": "Run a container in the background"
+    },
+    {
+      "command": "podman run --rm -it <img> sh",
+      "description": "Throwaway interactive container"
+    },
+    {
+      "command": "podman ps -a",
+      "description": "List all containers"
+    },
+    {
+      "command": "podman start|stop <c>",
+      "description": "Start or stop a container"
+    },
+    {
+      "command": "podman exec -it <c> sh",
+      "description": "Shell into a running container"
+    },
+    {
+      "command": "podman logs -f <c>",
+      "description": "Follow container logs"
+    },
+    {
+      "command": "podman rm -f <c>",
+      "description": "Remove a container (force)"
+    }
+  ],
+  "Images": [
+    {
+      "command": "podman pull <img>",
+      "description": "Download an image"
+    },
+    {
+      "command": "podman images",
+      "description": "List local images"
+    },
+    {
+      "command": "podman build -t <tag> .",
+      "description": "Build from Containerfile/Dockerfile"
+    },
+    {
+      "command": "podman push <img> <dest>",
+      "description": "Push an image to a registry"
+    },
+    {
+      "command": "podman login <registry>",
+      "description": "Log in to a registry"
+    },
+    {
+      "command": "podman rmi <img>",
+      "description": "Remove an image"
+    },
+    {
+      "command": "podman image prune -a",
+      "description": "Remove unused images"
+    }
+  ],
+  "Pods": [
+    {
+      "command": "podman pod create -n <p> -p 8080:80",
+      "description": "Create a pod with a published port"
+    },
+    {
+      "command": "podman run -d --pod <p> <img>",
+      "description": "Run a container inside a pod"
+    },
+    {
+      "command": "podman pod ps",
+      "description": "List pods"
+    },
+    {
+      "command": "podman pod stop|start <p>",
+      "description": "Stop or start all containers of a pod"
+    },
+    {
+      "command": "podman pod rm -f <p>",
+      "description": "Remove a pod and its containers"
+    },
+    {
+      "command": "podman kube generate <p> > pod.yaml",
+      "description": "Export a pod as Kubernetes YAML"
+    },
+    {
+      "command": "podman kube play pod.yaml",
+      "description": "Create pods from Kubernetes YAML"
+    }
+  ],
+  "Volumes, Networks & Files": [
+    {
+      "command": "-v ./data:/data:Z",
+      "description": "Bind mount with SELinux relabel"
+    },
+    {
+      "command": "podman volume create|ls|rm <v>",
+      "description": "Manage named volumes"
+    },
+    {
+      "command": "podman network create <net>",
+      "description": "Create a network"
+    },
+    {
+      "command": "podman cp <c>:<path> <dest>",
+      "description": "Copy files out of a container"
+    },
+    {
+      "command": "podman inspect <obj>",
+      "description": "Low-level info as JSON"
+    },
+    {
+      "command": "podman compose up -d",
+      "description": "Run a compose file (via compose provider)"
+    }
+  ],
+  "Systemd & Quadlet": [
+    {
+      "command": "~/.config/containers/systemd/",
+      "description": "Put <name>.container Quadlet units here"
+    },
+    {
+      "command": "systemctl --user daemon-reload",
+      "description": "Generate services from Quadlet units"
+    },
+    {
+      "command": "systemctl --user start <name>",
+      "description": "Start the generated service"
+    },
+    {
+      "command": "loginctl enable-linger $USER",
+      "description": "Keep user services running after logout"
+    },
+    {
+      "command": "podman auto-update",
+      "description": "Update containers labelled for auto-update"
+    },
+    {
+      "command": "podman generate systemd --new <c>",
+      "description": "Old way (deprecated) — prefer Quadlet"
+    }
+  ],
+  "System & Rootless": [
+    {
+      "command": "podman info",
+      "description": "Host, storage and rootless details"
+    },
+    {
+      "command": "podman system df",
+      "description": "Disk usage by images/containers/volumes"
+    },
+    {
+      "command": "podman system prune -a",
+      "description": "Remove all unused data"
+    },
+    {
+      "command": "podman unshare <cmd>",
+      "description": "Run a command in the rootless namespace"
+    },
+    {
+      "command": "podman machine init|start",
+      "description": "Linux VM for Windows/macOS"
+    },
+    {
+      "command": "podman system connection ls",
+      "description": "List remote/VM connections"
+    }
+  ]
+}

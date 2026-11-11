@@ -1,0 +1,5 @@
+#!/bin/sh
+# /etc/update-motd.d/60-cheatbox (Debian/Ubuntu, pam_motd).
+# Запускается от root ДО открытия сессии, поэтому ширину терминала
+# узнать нельзя — задаём её явно. chmod +x обязателен.
+exec /usr/local/bin/cheatbox random --boxes 2 --width 100 --color always

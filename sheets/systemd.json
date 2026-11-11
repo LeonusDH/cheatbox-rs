@@ -1,0 +1,183 @@
+{
+  "LOGO": [
+    {
+      "ascii": [
+        "",
+        "  [green]●[/] sshd.service    [green]active[/]",
+        "  [green]●[/] nginx.service   [green]active[/]",
+        "  [yellow]○[/] backup.timer    [yellow]waiting[/]",
+        "  [red]×[/] app.service     [red]failed[/]",
+        ""
+      ]
+    }
+  ],
+  "TITLE": [
+    {
+      "ascii": [
+        "                    __                     __",
+        "   _______  _______/ /____  ____ ___  ____/ /",
+        "  / ___/ / / / ___/ __/ _ \\/ __ `__ \\/ __  / ",
+        " (__  ) /_/ (__  ) /_/  __/ / / / / / /_/ /  ",
+        "/____/\\__, /____/\\__/\\___/_/ /_/ /_/\\__,_/   ",
+        "     /____/                                  "
+      ]
+    }
+  ],
+  "STYLE": {
+    "command_width": 33,
+    "outer_width": 135,
+    "primary_color": "green"
+  },
+  "Services": [
+    {
+      "command": "systemctl status <u>",
+      "description": "State and recent log lines"
+    },
+    {
+      "command": "systemctl start|stop <u>",
+      "description": "Start or stop a unit"
+    },
+    {
+      "command": "systemctl restart <u>",
+      "description": "Restart a unit"
+    },
+    {
+      "command": "systemctl reload <u>",
+      "description": "Reload config without restart"
+    },
+    {
+      "command": "systemctl enable --now <u>",
+      "description": "Start now and on boot"
+    },
+    {
+      "command": "systemctl disable --now <u>",
+      "description": "Stop now and not on boot"
+    }
+  ],
+  "Inspect": [
+    {
+      "command": "systemctl --failed",
+      "description": "List failed units"
+    },
+    {
+      "command": "systemctl list-units -t service",
+      "description": "List loaded services"
+    },
+    {
+      "command": "systemctl list-timers",
+      "description": "Timers and next run time"
+    },
+    {
+      "command": "systemctl cat <u>",
+      "description": "Show unit file with drop-ins"
+    },
+    {
+      "command": "systemctl show <u> -p <Prop>",
+      "description": "Show a unit property"
+    },
+    {
+      "command": "systemctl list-dependencies <u>",
+      "description": "Dependency tree"
+    }
+  ],
+  "Editing Units": [
+    {
+      "command": "systemctl edit <u>",
+      "description": "Create a drop-in override"
+    },
+    {
+      "command": "systemctl edit --full <u>",
+      "description": "Edit a full copy of the unit"
+    },
+    {
+      "command": "systemctl revert <u>",
+      "description": "Drop all local overrides"
+    },
+    {
+      "command": "systemctl daemon-reload",
+      "description": "Reread unit files after changes"
+    },
+    {
+      "command": "systemctl mask <u>",
+      "description": "Make a unit impossible to start"
+    },
+    {
+      "command": "systemctl unmask <u>",
+      "description": "Undo mask"
+    }
+  ],
+  "Logs (journalctl)": [
+    {
+      "command": "journalctl -u <u> -f",
+      "description": "Follow logs of a unit"
+    },
+    {
+      "command": "journalctl -b -p err",
+      "description": "Errors since this boot"
+    },
+    {
+      "command": "journalctl --since \"1 hour ago\"",
+      "description": "Logs from the last hour"
+    },
+    {
+      "command": "journalctl -k",
+      "description": "Kernel messages"
+    },
+    {
+      "command": "journalctl --disk-usage",
+      "description": "Size of the journal"
+    },
+    {
+      "command": "journalctl --vacuum-time=7d",
+      "description": "Delete logs older than 7 days"
+    }
+  ],
+  "System": [
+    {
+      "command": "systemd-analyze blame",
+      "description": "What slowed down the boot"
+    },
+    {
+      "command": "systemd-analyze critical-chain",
+      "description": "Boot critical path"
+    },
+    {
+      "command": "systemctl reboot|poweroff",
+      "description": "Reboot or power off"
+    },
+    {
+      "command": "timedatectl",
+      "description": "Time, timezone, NTP status"
+    },
+    {
+      "command": "hostnamectl set-hostname <n>",
+      "description": "Change hostname"
+    },
+    {
+      "command": "systemd-run --on-active=5m <cmd>",
+      "description": "Run a command once in 5 minutes"
+    }
+  ],
+  "User Units": [
+    {
+      "command": "~/.config/systemd/user/",
+      "description": "Where user unit files live"
+    },
+    {
+      "command": "systemctl --user enable --now <u>",
+      "description": "Enable a user service"
+    },
+    {
+      "command": "systemctl --user status <u>",
+      "description": "Status of a user service"
+    },
+    {
+      "command": "journalctl --user -u <u>",
+      "description": "Logs of a user service"
+    },
+    {
+      "command": "loginctl enable-linger <user>",
+      "description": "Run user units without login"
+    }
+  ]
+}

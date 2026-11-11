@@ -1,0 +1,177 @@
+{
+  "LOGO": [
+    {
+      "ascii": [
+        "[dark_cyan]             ▆▆[/]",
+        "[dark_cyan]        ▆▆   ▆▆[/]",
+        "[dark_cyan]   ▆▆   ▆▆   ▆▆[/]",
+        "[dark_cyan]   ▆▆   ▆▆   ▆▆[/]",
+        "[green]  BUILD SUCCESSFUL[/]"
+      ]
+    }
+  ],
+  "TITLE": [
+    {
+      "ascii": [
+        "   ______               ____   ",
+        "  / ____/________ _____/ / /__ ",
+        " / / __/ ___/ __ `/ __  / / _ \\",
+        "/ /_/ / /  / /_/ / /_/ / /  __/",
+        "\\____/_/   \\__,_/\\__,_/_/\\___/ "
+      ]
+    }
+  ],
+  "STYLE": {
+    "command_width": 34,
+    "outer_width": 150,
+    "primary_color": "dark_cyan"
+  },
+  "Basics": [
+    {
+      "command": "./gradlew build",
+      "description": "Compile, test and assemble"
+    },
+    {
+      "command": "./gradlew assemble",
+      "description": "Build outputs without tests"
+    },
+    {
+      "command": "./gradlew clean",
+      "description": "Delete build/"
+    },
+    {
+      "command": "./gradlew tasks --all",
+      "description": "List available tasks"
+    },
+    {
+      "command": "./gradlew test",
+      "description": "Run tests"
+    },
+    {
+      "command": "./gradlew :sub:build",
+      "description": "Task in a subproject"
+    }
+  ],
+  "Flags": [
+    {
+      "command": "-x test",
+      "description": "Exclude a task"
+    },
+    {
+      "command": "--tests '*Foo*'",
+      "description": "Run matching tests only"
+    },
+    {
+      "command": "--stacktrace",
+      "description": "Show stacktrace on failure"
+    },
+    {
+      "command": "--info",
+      "description": "More verbose output"
+    },
+    {
+      "command": "--dry-run",
+      "description": "Show tasks without running"
+    },
+    {
+      "command": "--scan",
+      "description": "Publish a build scan"
+    }
+  ],
+  "Dependencies": [
+    {
+      "command": "./gradlew dependencies",
+      "description": "Dependency tree per configuration"
+    },
+    {
+      "command": "./gradlew dependencyInsight --dependency <n>",
+      "description": "Why this version was picked"
+    },
+    {
+      "command": "./gradlew --refresh-dependencies",
+      "description": "Ignore cached dependencies"
+    },
+    {
+      "command": "./gradlew buildEnvironment",
+      "description": "Plugins/buildscript classpath"
+    },
+    {
+      "command": "./gradlew publishToMavenLocal",
+      "description": "Install to ~/.m2"
+    }
+  ],
+  "Speed & Daemon": [
+    {
+      "command": "--build-cache",
+      "description": "Reuse task outputs"
+    },
+    {
+      "command": "--configuration-cache",
+      "description": "Cache configuration phase"
+    },
+    {
+      "command": "--parallel",
+      "description": "Build projects in parallel"
+    },
+    {
+      "command": "--offline",
+      "description": "Do not touch the network"
+    },
+    {
+      "command": "./gradlew --status",
+      "description": "Running daemons"
+    },
+    {
+      "command": "./gradlew --stop",
+      "description": "Stop daemons"
+    }
+  ],
+  "Wrapper": [
+    {
+      "command": "./gradlew --version",
+      "description": "Gradle, Kotlin, JVM versions"
+    },
+    {
+      "command": "./gradlew wrapper --gradle-version <v>",
+      "description": "Upgrade the wrapper"
+    },
+    {
+      "command": "gradle init",
+      "description": "Create a new build"
+    },
+    {
+      "command": "./gradlew projects",
+      "description": "Project structure"
+    },
+    {
+      "command": "./gradlew properties",
+      "description": "Project properties"
+    }
+  ],
+  "Minecraft Modding": [
+    {
+      "command": "./gradlew runClient",
+      "description": "Launch dev client (Loom / NeoForge)"
+    },
+    {
+      "command": "./gradlew runServer",
+      "description": "Launch dev server"
+    },
+    {
+      "command": "./gradlew runData",
+      "description": "NeoForge datagen (1.21.4+: runClientData)"
+    },
+    {
+      "command": "./gradlew runDatagen",
+      "description": "Fabric datagen"
+    },
+    {
+      "command": "./gradlew genSources",
+      "description": "Decompile MC sources (Fabric Loom)"
+    },
+    {
+      "command": "build/libs/",
+      "description": "Where the built mod jars end up"
+    }
+  ]
+}
