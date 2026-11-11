@@ -1,0 +1,189 @@
+{
+  "LOGO": [
+    {
+      "ascii": [
+        "",
+        "  [white]GET /api[/] [turquoise2]─────────>[/]",
+        "            [turquoise2]<─────────[/] [green]200 OK[/]",
+        "  [dim]{ \"ok\": true }[/]",
+        ""
+      ]
+    }
+  ],
+  "TITLE": [
+    {
+      "ascii": [
+        "                   __",
+        "  _______  _______/ /",
+        " / ___/ / / / ___/ / ",
+        "/ /__/ /_/ / /  / /  ",
+        "\\___/\\__,_/_/  /_/   "
+      ]
+    }
+  ],
+  "STYLE": {
+    "command_width": 34,
+    "outer_width": 150,
+    "primary_color": "turquoise2"
+  },
+  "Basics": [
+    {
+      "command": "curl https://example.com",
+      "description": "Print the response body"
+    },
+    {
+      "command": "curl -L <url>",
+      "description": "Follow redirects"
+    },
+    {
+      "command": "curl -o page.html <url>",
+      "description": "Save to a file"
+    },
+    {
+      "command": "curl -O <url>",
+      "description": "Save under the remote file name"
+    },
+    {
+      "command": "curl -I <url>",
+      "description": "Headers only (HEAD request)"
+    },
+    {
+      "command": "curl -i <url>",
+      "description": "Headers + body"
+    }
+  ],
+  "Send Data": [
+    {
+      "command": "curl -d 'a=1&b=2' <url>",
+      "description": "POST a form (-d implies POST)"
+    },
+    {
+      "command": "curl --json '{\"a\":1}' <url>",
+      "description": "POST JSON with the right headers (7.82+)"
+    },
+    {
+      "command": "curl --json @body.json <url>",
+      "description": "JSON body from a file"
+    },
+    {
+      "command": "curl -F 'file=@photo.jpg' -F 'name=x' <url>",
+      "description": "Multipart upload"
+    },
+    {
+      "command": "curl --data-urlencode 'q=hello world' <url>",
+      "description": "URL-encode a value"
+    },
+    {
+      "command": "curl -X DELETE <url>",
+      "description": "Other methods (PUT, PATCH, DELETE)"
+    },
+    {
+      "command": "curl -T file.txt <url>",
+      "description": "Upload a file with PUT"
+    }
+  ],
+  "Headers & Auth": [
+    {
+      "command": "curl --oauth2-bearer <token> <url>",
+      "description": "Bearer token (Authorization header)"
+    },
+    {
+      "command": "curl -u user:pass <url>",
+      "description": "Basic auth (-u user: asks for password)"
+    },
+    {
+      "command": "curl -H 'Accept: application/json' <url>",
+      "description": "Any request header"
+    },
+    {
+      "command": "curl -A 'Mozilla/5.0' <url>",
+      "description": "User-Agent"
+    },
+    {
+      "command": "curl -c jar.txt -b jar.txt <url>",
+      "description": "Save and send cookies"
+    },
+    {
+      "command": "curl -b 'session=abc' <url>",
+      "description": "Send a cookie directly"
+    }
+  ],
+  "Debug": [
+    {
+      "command": "curl -v <url>",
+      "description": "Request/response headers, TLS details"
+    },
+    {
+      "command": "curl -so /dev/null -w '%{http_code}' <url>",
+      "description": "Status code only"
+    },
+    {
+      "command": "curl -so /dev/null -w '%{time_total}' <url>",
+      "description": "Total time (also time_connect, time_appconnect)"
+    },
+    {
+      "command": "curl --resolve <host>:443:<ip> https://<host>",
+      "description": "Test a server before DNS points to it"
+    },
+    {
+      "command": "curl --trace-ascii trace.txt <url>",
+      "description": "Full dump of everything sent and received"
+    },
+    {
+      "command": "curl -k <url>",
+      "description": "Ignore TLS errors (testing only!)"
+    }
+  ],
+  "Downloads": [
+    {
+      "command": "curl -C - -O <url>",
+      "description": "Resume an interrupted download"
+    },
+    {
+      "command": "curl --limit-rate 1M -O <url>",
+      "description": "Limit speed"
+    },
+    {
+      "command": "curl --retry 5 --retry-delay 2 -O <url>",
+      "description": "Retry on transient errors"
+    },
+    {
+      "command": "curl -Z -O <url1> -O <url2>",
+      "description": "Parallel downloads"
+    },
+    {
+      "command": "curl -O 'https://host/img\\[1-20].png'",
+      "description": "URL ranges (also {a,b,c})"
+    },
+    {
+      "command": "curl -fsSL <url> | sh",
+      "description": "Run an install script — read it first!"
+    }
+  ],
+  "Scripting": [
+    {
+      "command": "curl -f <url>",
+      "description": "Exit code 22 on HTTP errors (4xx/5xx)"
+    },
+    {
+      "command": "curl -sS <url>",
+      "description": "Quiet, but still show errors"
+    },
+    {
+      "command": "curl -m 10 --connect-timeout 3 <url>",
+      "description": "Timeouts (total / connect)"
+    },
+    {
+      "command": "curl -x http://proxy:3128 <url>",
+      "description": "Via a proxy (--socks5-hostname too)"
+    },
+    {
+      "command": "curl --compressed <url>",
+      "description": "Ask for gzip/br and decompress"
+    },
+    {
+      "command": "curl -s <url> | jq .",
+      "description": "Pretty-print JSON"
+    }
+  ]
+}

@@ -41,6 +41,7 @@
 | 🔐 OpenSSL | `cheatbox show openssl` | <img width="900" src="images/openssl.png"> |
 | 🌐 nginx | `cheatbox show nginx` | <img width="900" src="images/nginx.png"> |
 | 🔒 Caddy | `cheatbox show caddy` | <img width="900" src="images/caddy.png"> |
+| 🌀 curl | `cheatbox show curl` | <img width="900" src="images/curl.png"> |
 
 ## Контейнеры
 

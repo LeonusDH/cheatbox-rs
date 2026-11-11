@@ -8,8 +8,8 @@
 Все листы — в [PREVIEWS.md](PREVIEWS.md).
 
 - один бинарник без Python, `uv`, `rich` и `pick`; листы встроены внутрь;
-- 29 встроенных листов — Linux и сервер (`linux`, `systemd`, `ssh`, `tmux`), пакетные менеджеры (`apt`, `dnf`, `pacman`),
-  поиск/текст/архивы (`find`, `grep`, `sed-awk`, `tar`), сеть и безопасность (`ufw`, `nftables`, `crowdsec`, `openssl`, `nginx`, `caddy`),
+- 30 встроенных листов — Linux и сервер (`linux`, `systemd`, `ssh`, `tmux`), пакетные менеджеры (`apt`, `dnf`, `pacman`),
+  поиск/текст/архивы (`find`, `grep`, `sed-awk`, `tar`), сеть и безопасность (`ufw`, `nftables`, `crowdsec`, `openssl`, `nginx`, `caddy`, `curl`),
   контейнеры (`docker`, `podman`, `kubernetes`), разработка (`git`, `cargo`, `gradle`, `npm`, `bun`) и Windows (`winget`, `scoop`, `pwsh`, `wsl`);
   `gradle` — с блоком про моддинг Minecraft
 - формат `*.json` **полностью совместим** с оригиналом (`LOGO`, `TITLE`, `STYLE`, категории) — листы из upstream кладутся как есть;
