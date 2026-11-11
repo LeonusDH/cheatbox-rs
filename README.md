@@ -88,7 +88,7 @@ python tools/preview.py ufw git    # только некоторые
 ```
 
 Шрифт ищется сам (JetBrains Mono → Cascadia Mono → Consolas → DejaVu Sans Mono), можно задать
-`--font путь.ttf`; символы, которых нет в шрифте, берутся из DejaVu Sans Mono. Размер — `--size`, плотность — `--scale`.
+`--font путь.ttf`; символы, которых нет в шрифте, берутся из запасных (DejaVu Sans Mono, затем CJK и эмодзи, если есть в системе). Размер — `--size`, плотность — `--scale`.
 
 ## Лицензия
 

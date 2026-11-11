@@ -9,7 +9,11 @@ use std::path::PathBuf;
 use std::process::ExitCode;
 
 #[derive(Parser)]
-#[command(name = "cheatbox", version, about = "Cheatsheets in a bento box (Rust port of fatinul/cheatbox)")]
+#[command(
+    name = "cheatbox",
+    version,
+    about = "Cheatsheets in a bento box (Rust port of fatinul/cheatbox)"
+)]
 struct Cli {
     /// Extra directory with *.json sheets (can repeat). Also read: $CHEATBOX_DIR or the user dir (see `cheatbox path`)
     #[arg(long = "data-dir", global = true)]
@@ -65,11 +69,14 @@ enum Cmd {
 }
 
 fn main() -> ExitCode {
+    // Old Windows consoles: if VT mode can't be enabled, `auto` falls back to no color.
     #[cfg(windows)]
-    let _ = enable_ansi_support::enable_ansi_support();
+    let ansi_ok = enable_ansi_support::enable_ansi_support().is_ok();
+    #[cfg(not(windows))]
+    let ansi_ok = true;
 
     let cli = Cli::parse();
-    match run(cli) {
+    match run(cli, ansi_ok) {
         Ok(()) => ExitCode::SUCCESS,
         Err(e) => {
             eprintln!("cheatbox: {e}");
@@ -78,26 +85,40 @@ fn main() -> ExitCode {
     }
 }
 
-fn run(cli: Cli) -> Result<(), String> {
+/// Print a line, silently stopping on a closed pipe (`cheatbox list | head`).
+macro_rules! out {
+    ($($t:tt)*) => {{
+        let _ = writeln!(std::io::stdout().lock(), $($t)*);
+    }};
+}
+
+fn run(cli: Cli, ansi_ok: bool) -> Result<(), String> {
     let tty = std::io::stdout().is_terminal();
+    // https://no-color.org: only a non-empty value disables color
+    let no_color = std::env::var_os("NO_COLOR").is_some_and(|v| !v.is_empty());
     let color = match cli.color {
         ColorMode::Always => true,
         ColorMode::Never => false,
-        ColorMode::Auto => tty && std::env::var_os("NO_COLOR").is_none(),
+        ColorMode::Auto => tty && ansi_ok && !no_color,
     };
     let sheets = sheet::discover(&cli.data_dir);
-    let out = Output { width: cli.width, header: !cli.no_header, color, tty };
+    let out = Output {
+        width: cli.width,
+        header: !cli.no_header,
+        color,
+        tty,
+    };
 
     match cli.cmd {
         Some(Cmd::List) => {
             for (name, src) in &sheets {
-                println!("{name:<16} {}", src.describe());
+                out!("{name:<16} {}", src.describe());
             }
             Ok(())
         }
         Some(Cmd::Path) => {
             match sheet::user_dir() {
-                Some(d) => println!("{}", d.display()),
+                Some(d) => out!("{}", d.display()),
                 None => return Err("cannot determine user directory".into()),
             }
             Ok(())
@@ -107,14 +128,18 @@ fn run(cli: Cli) -> Result<(), String> {
             let mut s = sheet::load(src)?;
             if !only.is_empty() {
                 let only: Vec<String> = only.iter().map(|o| o.to_lowercase()).collect();
-                s.categories.retain(|c| only.iter().any(|o| c.name.to_lowercase().contains(o)));
+                s.categories
+                    .retain(|c| only.iter().any(|o| c.name.to_lowercase().contains(o)));
                 if s.categories.is_empty() {
                     return Err("no categories matched --only".into());
                 }
             }
             out.print(&s)
         }
-        Some(Cmd::Random { sheets: filter, boxes }) => {
+        Some(Cmd::Random {
+            sheets: filter,
+            boxes,
+        }) => {
             let (_, mut s) = pick_random(&sheets, &filter)?;
             if boxes > 0 && boxes < s.categories.len() {
                 fastrand::shuffle(&mut s.categories);
@@ -124,14 +149,23 @@ fn run(cli: Cli) -> Result<(), String> {
         }
         Some(Cmd::Tip { sheets: filter }) => {
             let (name, s) = pick_random(&sheets, &filter)?;
-            let pairs: Vec<_> = s.categories.iter().flat_map(|c| c.entries.iter().map(move |e| (c, e))).collect();
-            let (c, e) = pairs.get(fastrand::usize(..pairs.len().max(1))).ok_or("sheet is empty")?;
-            println!("{}", markup::to_string(&render::tip(&name, &s, c, e), color));
+            let pairs: Vec<_> = s
+                .categories
+                .iter()
+                .flat_map(|c| c.entries.iter().map(move |e| (c, e)))
+                .collect();
+            let (c, e) = pairs[fastrand::usize(..pairs.len())];
+            out!(
+                "{}",
+                markup::to_string(&render::tip(&name, &s, c, e), color)
+            );
             Ok(())
         }
         None => {
             if !tty || !std::io::stdin().is_terminal() {
-                return Err("not a terminal: use `cheatbox show <name>` or `cheatbox random`".into());
+                return Err(
+                    "not a terminal: use `cheatbox show <name>` or `cheatbox random`".into(),
+                );
             }
             let names: Vec<&String> = sheets.keys().collect();
             let idx = dialoguer::FuzzySelect::new()
@@ -165,12 +199,19 @@ fn pick_random(
         }
         filter.iter().collect()
     };
-    if pool.is_empty() {
-        return Err("no sheets available".into());
+    // Try sheets in random order and skip broken or empty ones, so a single
+    // bad file in the user dir can't break the login banner.
+    let mut pool = pool;
+    fastrand::shuffle(&mut pool);
+    let mut last_err = String::from("no sheets available");
+    for name in pool {
+        match sheet::load(&sheets[name]) {
+            Ok(s) if !s.categories.is_empty() => return Ok((name.clone(), s)),
+            Ok(_) => last_err = format!("sheet '{name}' is empty"),
+            Err(e) => last_err = e,
+        }
     }
-    let name = pool[fastrand::usize(..pool.len())].clone();
-    let s = sheet::load(&sheets[&name])?;
-    Ok((name, s))
+    Err(last_err)
 }
 
 struct Output {
@@ -187,8 +228,16 @@ impl Output {
         } else {
             None
         };
-        let width = self.width.unwrap_or_else(|| term.map_or(s.outer_width, |t| t.min(s.outer_width)));
-        let lines = render::render(s, &render::Opts { width, header: self.header });
+        let width = self
+            .width
+            .unwrap_or_else(|| term.map_or(s.outer_width, |t| t.min(s.outer_width)));
+        let lines = render::render(
+            s,
+            &render::Opts {
+                width,
+                header: self.header,
+            },
+        );
         let mut so = std::io::stdout().lock();
         for l in lines {
             // ignore broken pipe (e.g. `| head`)

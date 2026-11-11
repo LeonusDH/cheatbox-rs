@@ -29,7 +29,10 @@ pub struct Style {
 
 impl Style {
     pub fn fg(c: Color) -> Self {
-        Style { fg: Some(c), ..Default::default() }
+        Style {
+            fg: Some(c),
+            ..Default::default()
+        }
     }
 
     /// `other` wins wherever it sets something.
@@ -176,7 +179,10 @@ pub fn parse(src: &str, base: Style) -> Line {
     while i < chars.len() {
         let c = chars[i];
         if c == '\\' && chars.get(i + 1) == Some(&'[') {
-            out.push(Cell { ch: '[', style: cur(&stack) });
+            out.push(Cell {
+                ch: '[',
+                style: cur(&stack),
+            });
             i += 2;
             continue;
         }
@@ -190,7 +196,9 @@ pub fn parse(src: &str, base: Style) -> Line {
                         let pos = if name.is_empty() {
                             stack.len().checked_sub(1)
                         } else {
-                            stack.iter().rposition(|(n, _)| n == name)
+                            stack
+                                .iter()
+                                .rposition(|(n, _)| n.eq_ignore_ascii_case(name))
                         };
                         if let Some(p) = pos {
                             stack.truncate(p);
@@ -205,10 +213,24 @@ pub fn parse(src: &str, base: Style) -> Line {
                 }
             }
         }
-        out.push(Cell { ch: c, style: cur(&stack) });
+        out.push(Cell {
+            ch: c,
+            style: cur(&stack),
+        });
         i += 1;
     }
     out
+}
+
+/// Replace control characters (tabs, newlines…) with spaces: they have no
+/// display width and would break box alignment.
+pub fn flatten(mut line: Line) -> Line {
+    for c in &mut line {
+        if c.ch.is_control() {
+            c.ch = ' ';
+        }
+    }
+    line
 }
 
 /// Word-wrap a styled line to `w` columns (long words are folded).
@@ -234,7 +256,10 @@ pub fn wrap(line: &[Cell], w: usize) -> Vec<Line> {
         let sep = if cur.is_empty() { 0 } else { 1 };
         if cur_w + sep + ww <= w {
             if sep == 1 {
-                cur.push(Cell { ch: ' ', style: word.first().map(|c| c.style).unwrap_or_default() });
+                cur.push(Cell {
+                    ch: ' ',
+                    style: word.first().map(|c| c.style).unwrap_or_default(),
+                });
             }
             cur_w += sep + ww;
             cur.extend(word);
@@ -261,13 +286,26 @@ pub fn wrap(line: &[Cell], w: usize) -> Vec<Line> {
 
 pub fn pad_right(mut line: Line, w: usize) -> Line {
     let cw = width(&line);
-    line.extend(std::iter::repeat_n(Cell { ch: ' ', style: Style::default() }, w.saturating_sub(cw)));
+    line.extend(std::iter::repeat_n(
+        Cell {
+            ch: ' ',
+            style: Style::default(),
+        },
+        w.saturating_sub(cw),
+    ));
     line
 }
 
 pub fn pad_left(line: Line, w: usize) -> Line {
     let cw = width(&line);
-    let mut out: Line = std::iter::repeat_n(Cell { ch: ' ', style: Style::default() }, w.saturating_sub(cw)).collect();
+    let mut out: Line = std::iter::repeat_n(
+        Cell {
+            ch: ' ',
+            style: Style::default(),
+        },
+        w.saturating_sub(cw),
+    )
+    .collect();
     out.extend(line);
     out
 }
@@ -326,7 +364,10 @@ mod tests {
 
     #[test]
     fn wrapping() {
-        let l = plain("Create an empty file or update file timestamps", Style::default());
+        let l = plain(
+            "Create an empty file or update file timestamps",
+            Style::default(),
+        );
         let w = wrap(&l, 20);
         assert!(w.iter().all(|x| width(x) <= 20));
         assert_eq!(w.len(), 3);

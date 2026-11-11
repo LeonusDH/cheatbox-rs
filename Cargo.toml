@@ -2,6 +2,7 @@
 name = "cheatbox"
 version = "0.2.0"
 edition = "2021"
+rust-version = "1.82"
 description = "Cheatsheets in a bento box — Rust port of fatinul/cheatbox, with MOTD mode"
 license = "GPL-3.0-or-later"
 readme = "README.md"

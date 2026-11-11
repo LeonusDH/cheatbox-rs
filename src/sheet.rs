@@ -74,7 +74,9 @@ pub fn discover(extra: &[PathBuf]) -> BTreeMap<String, Source> {
     }
     let dirs = user_dir().into_iter().chain(extra.iter().cloned());
     for dir in dirs {
-        let Ok(rd) = std::fs::read_dir(&dir) else { continue };
+        let Ok(rd) = std::fs::read_dir(&dir) else {
+            continue;
+        };
         for e in rd.flatten() {
             let p = e.path();
             if p.extension().is_some_and(|e| e == "json") {
@@ -91,7 +93,9 @@ pub fn discover(extra: &[PathBuf]) -> BTreeMap<String, Source> {
 pub fn load(src: &Source) -> Result<Sheet, String> {
     let text = match src {
         Source::Builtin(s) => s.to_string(),
-        Source::File(p) => std::fs::read_to_string(p).map_err(|e| format!("{}: {e}", p.display()))?,
+        Source::File(p) => {
+            std::fs::read_to_string(p).map_err(|e| format!("{}: {e}", p.display()))?
+        }
     };
     parse(&text).map_err(|e| format!("{}: {e}", src.describe()))
 }
@@ -102,7 +106,11 @@ fn ascii(v: &Value) -> Vec<String> {
         .and_then(|a| a.first())
         .and_then(|o| o.get("ascii"))
         .and_then(|a| a.as_array())
-        .map(|a| a.iter().filter_map(|l| l.as_str().map(String::from)).collect())
+        .map(|a| {
+            a.iter()
+                .filter_map(|l| l.as_str().map(String::from))
+                .collect()
+        })
         .unwrap_or_default()
 }
 
@@ -139,11 +147,21 @@ pub fn parse(text: &str) -> Result<Sheet, String> {
             .filter_map(|e| {
                 Some(Entry {
                     command: e.get("command")?.as_str()?.to_string(),
-                    description: e.get("description").and_then(|d| d.as_str()).unwrap_or("").to_string(),
+                    description: e
+                        .get("description")
+                        .and_then(|d| d.as_str())
+                        .unwrap_or("")
+                        .to_string(),
                 })
             })
             .collect();
-        sheet.categories.push(Category { name: k.clone(), entries });
+        let entries: Vec<Entry> = entries;
+        if !entries.is_empty() {
+            sheet.categories.push(Category {
+                name: k.clone(),
+                entries,
+            });
+        }
     }
     Ok(sheet)
 }

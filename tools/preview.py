@@ -13,7 +13,7 @@ continuous regardless of line height.
 
 Font lookup: --font, then JetBrains Mono / Cascadia Mono / Consolas /
 DejaVu Sans Mono in usual system locations. Glyphs missing from the main
-font fall back to DejaVu Sans Mono when available.
+font fall back to DejaVu Sans Mono, then a CJK and an emoji/symbol font\nwhen available.
 """
 import argparse
 import os
@@ -22,6 +22,7 @@ import re
 import shutil
 import subprocess
 import sys
+import unicodedata
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
@@ -48,6 +49,11 @@ def xterm(i):
         return (lv[i // 36], lv[(i // 6) % 6], lv[i % 6])
     g = 8 + (i - 232) * 10
     return (g, g, g)
+
+
+def cells(ch):
+    """Terminal width of a character: 2 for wide (CJK, most emoji), else 1."""
+    return 2 if unicodedata.east_asian_width(ch) in ("W", "F") else 1
 
 
 def blend(a, b, t):
@@ -165,6 +171,14 @@ MAIN = [("JetBrainsMono-Regular.ttf", "JetBrainsMono-Bold.ttf"),
         ("DejaVuSansMono.ttf", "DejaVuSansMono-Bold.ttf")]
 
 
+# Tried in order for glyphs the main font lacks (symbols, CJK, emoji).
+FALLBACKS = [
+    ["DejaVuSansMono.ttf"],
+    ["NotoSansMonoCJK*-Regular.ttc", "NotoSansCJK-Regular.ttc", "msgothic.ttc", "msyh.ttc", "wqy-zenhei.ttc"],
+    ["seguiemj.ttf", "Symbola*.ttf", "seguisym.ttf"],
+]
+
+
 class Fonts:
     def __init__(self, path, size):
         if path:
@@ -182,8 +196,14 @@ class Fonts:
             sys.exit("no monospace font found, pass --font")
         self.reg = ImageFont.truetype(reg, size)
         self.bold = ImageFont.truetype(bold, size)
-        fb = find_font(["DejaVuSansMono.ttf"])
-        self.fallback = ImageFont.truetype(fb, size) if fb else None
+        self.fallbacks = []
+        for names in FALLBACKS:
+            fb = find_font(names)
+            if fb:
+                try:
+                    self.fallbacks.append(ImageFont.truetype(fb, size))
+                except OSError:
+                    pass
         self.cw = self.reg.getlength("M")
         self._cache = {}
         self.name = Path(reg).name
@@ -192,7 +212,9 @@ class Fonts:
         f = self.bold if bold else self.reg
         key = (ch, bold)
         if key not in self._cache:
-            self._cache[key] = self.fallback if self.fallback and ord(ch) > 126 and _missing(f, ch) else f
+            if ord(ch) > 126 and _missing(f, ch):
+                f = next((fb for fb in self.fallbacks if not _missing(fb, ch)), f)
+            self._cache[key] = f
         return self._cache[key]
 
 
@@ -260,7 +282,7 @@ def background(w, h):
 def render(rows, fonts, scale, pad):
     cw = fonts.cw
     lh = round(fonts.reg.size * 1.42)
-    cols = max(sum(1 for _ in r) for r in rows)
+    cols = max(sum(cells(ch) for ch, _ in r) for r in rows)
     W = round(cols * cw + 2 * pad)
     H = round(len(rows) * lh + 2 * pad)
     img = background(W, H)
@@ -268,8 +290,10 @@ def render(rows, fonts, scale, pad):
     asc, _ = fonts.reg.getmetrics()
     for ri, row in enumerate(rows):
         y = pad + ri * lh
-        for ci, (ch, st) in enumerate(row):
-            x = pad + ci * cw
+        col = 0
+        for ch, st in row:
+            x = pad + col * cw
+            col += cells(ch)
             fg = st.fg or FG
             if st.bold and st.fgi is not None:  # "bold is bright", like most terminals
                 fg = ANSI16[st.fgi + 8]
@@ -279,7 +303,7 @@ def render(rows, fonts, scale, pad):
             if st.dim:
                 fg = blend(fg, BG, 0.45)
             if bg:
-                d.rectangle([x, y, x + cw + 0.5, y + lh], fill=bg)
+                d.rectangle([x, y, x + cw * cells(ch) + 0.5, y + lh], fill=bg)
             if ch == " ":
                 continue
             if ch in BOX:
@@ -307,7 +331,7 @@ def main():
     if not Path(exe).exists():
         exe = shutil.which("cheatbox") or sys.exit("build first: cargo build --release")
     names = a.sheets or [l.split()[0] for l in subprocess.run(
-        [exe, "list"], capture_output=True, text=True, check=True).stdout.splitlines() if l.strip()]
+        [exe, "list"], capture_output=True, text=True, encoding="utf-8", errors="replace", check=True).stdout.splitlines() if l.strip()]
 
     fonts = Fonts(a.font, round(a.size * a.scale))
     out = Path(a.out)

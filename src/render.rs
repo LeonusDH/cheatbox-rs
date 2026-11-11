@@ -54,7 +54,7 @@ fn panel(cat: &Category, width: usize, prim: Style, extra: usize) -> Vec<Line> {
     let border = |s: &str| plain(s, prim);
 
     // top border with title
-    let mut title = parse(&cat.name, prim);
+    let mut title = markup::flatten(parse(&cat.name, prim));
     let max_title = width.saturating_sub(6);
     if markup::width(&title) > max_title {
         title = markup::wrap(&title, max_title).remove(0);
@@ -67,15 +67,22 @@ fn panel(cat: &Category, width: usize, prim: Style, extra: usize) -> Vec<Line> {
     top.extend(border("╮"));
 
     let mut rows: Vec<Line> = Vec::new();
-    let head = Style { bold: Some(true), dim: Some(true), ..Default::default() };
+    let head = Style {
+        bold: Some(true),
+        dim: Some(true),
+        ..Default::default()
+    };
     let mut h = markup::pad_left(plain("Command", head), cmd_w);
     h.extend(spaces(2));
     h.extend(plain("Description", head));
     rows.push(h);
 
     for e in &cat.entries {
-        let cmd = markup::wrap(&parse(&e.command, prim), cmd_w);
-        let desc = markup::wrap(&parse(&e.description, Style::default()), desc_w);
+        let cmd = markup::wrap(&markup::flatten(parse(&e.command, prim)), cmd_w);
+        let desc = markup::wrap(
+            &markup::flatten(parse(&e.description, Style::default())),
+            desc_w,
+        );
         for i in 0..cmd.len().max(desc.len()) {
             let mut r = markup::pad_left(cmd.get(i).cloned().unwrap_or_default(), cmd_w);
             r.extend(spaces(2));
@@ -92,56 +99,78 @@ fn panel(cat: &Category, width: usize, prim: Style, extra: usize) -> Vec<Line> {
         l.extend(border(" │"));
         out.push(l);
     }
-    out.push(border(&format!("╰{}╯", "─".repeat(width.saturating_sub(2)))));
+    out.push(border(&format!(
+        "╰{}╯",
+        "─".repeat(width.saturating_sub(2))
+    )));
     out
 }
 
 fn header(sheet: &Sheet, width: usize) -> Vec<Line> {
-    // Parse the whole block at once (like rich): a tag may open on one line
-    // and close on another.
-    let logo: Vec<Line> = if sheet.logo.is_empty() {
-        Vec::new()
-    } else {
-        split_lines(parse(&sheet.logo.join("\n"), Style::default()))
+    // Parse each block at once (like rich): a tag may open on one line and
+    // close on another.
+    let block = |v: &[String]| -> Vec<Line> {
+        if v.is_empty() {
+            Vec::new()
+        } else {
+            split_lines(parse(&v.join("\n"), Style::default()))
+        }
     };
-    let mut title: Vec<Line> = if sheet.title.is_empty() {
-        Vec::new()
-    } else {
-        split_lines(parse(&sheet.title.join("\n"), Style::default()))
-    };
-    let lw = logo.iter().map(|l| markup::width(l)).max().unwrap_or(0);
-    let tw = title.iter().map(|l| markup::width(l)).max().unwrap_or(0);
+    let maxw = |b: &[Line]| b.iter().map(|l| markup::width(l)).max().unwrap_or(0);
+    let mut logo = block(&sheet.logo);
+    let mut title = block(&sheet.title);
+
+    // "CheatBox" subtitle centred under the title (rich panel subtitle)
+    if !title.is_empty() {
+        let sub = "CheatBox";
+        let tw = maxw(&title);
+        let mut s = spaces(tw.saturating_sub(sub.len()) / 2);
+        s.extend(plain(
+            sub,
+            Style {
+                dim: Some(true),
+                ..Default::default()
+            },
+        ));
+        title.push(s);
+    }
+
+    // Fit into the width: drop the logo first, then whatever still overflows.
+    const INDENT: usize = 2;
+    const GAP: usize = 6;
+    if !logo.is_empty() && !title.is_empty() && INDENT + maxw(&logo) + GAP + maxw(&title) > width {
+        logo.clear();
+    }
+    if INDENT + maxw(&title) > width {
+        title.clear();
+    }
+    if INDENT + maxw(&logo) > width {
+        logo.clear();
+    }
     if logo.is_empty() && title.is_empty() {
         return Vec::new();
     }
-    // subtitle under the title, centred like rich's panel subtitle
-    let sub = "CheatBox";
-    let sw = tw.max(sub.len());
-    let mut s = spaces((sw - sub.len()) / 2);
-    s.extend(plain(sub, Style { dim: Some(true), ..Default::default() }));
-    title.push(s);
 
-    let mut left_w = lw + 6; // 2 indent + logo + 4 gap
-    let (logo, lw) = if left_w + sw + 2 > width {
-        left_w = 0;
-        (Vec::new(), 0) // not enough room: drop the logo
+    let left_w = if logo.is_empty() || title.is_empty() {
+        0
     } else {
-        (logo, lw)
+        maxw(&logo) + GAP
     };
-    if sw + 2 > width {
-        return Vec::new();
-    }
-    let _ = lw;
     let rows = logo.len().max(title.len());
     let mut out = vec![Vec::new()];
     for i in 0..rows {
-        let mut l = Vec::new();
-        if left_w > 0 {
-            l.extend(spaces(2));
-            l.extend(markup::pad_right(logo.get(i).cloned().unwrap_or_default(), left_w - 2));
+        let mut l = spaces(INDENT);
+        if title.is_empty() {
+            l.extend(logo.get(i).cloned().unwrap_or_default());
+        } else {
+            if left_w > 0 {
+                l.extend(markup::pad_right(
+                    logo.get(i).cloned().unwrap_or_default(),
+                    left_w,
+                ));
+            }
+            l.extend(title.get(i).cloned().unwrap_or_default());
         }
-        l.extend(spaces(2));
-        l.extend(title.get(i).cloned().unwrap_or_default());
         out.push(l);
     }
     out.push(Vec::new());
@@ -151,7 +180,11 @@ fn header(sheet: &Sheet, width: usize) -> Vec<Line> {
 pub fn render(sheet: &Sheet, opts: &Opts) -> Vec<Line> {
     let width = opts.width.max(30);
     let prim = primary(sheet);
-    let mut out = if opts.header { header(sheet, width) } else { Vec::new() };
+    let mut out = if opts.header {
+        header(sheet, width)
+    } else {
+        Vec::new()
+    };
 
     let col2 = (width - 1) / 2;
     let all: Vec<&Category> = sheet.categories.iter().collect();
@@ -179,7 +212,10 @@ pub fn render(sheet: &Sheet, opts: &Opts) -> Vec<Line> {
             }
         }
     }
-    let flat: Vec<Vec<Line>> = cols.into_iter().map(|c| c.into_iter().flat_map(|(_, p)| p).collect()).collect();
+    let flat: Vec<Vec<Line>> = cols
+        .into_iter()
+        .map(|c| c.into_iter().flat_map(|(_, p)| p).collect())
+        .collect();
     let rows = flat.iter().map(|c| c.len()).max().unwrap_or(0);
     for r in 0..rows {
         let mut line: Line = Vec::new();
@@ -187,7 +223,10 @@ pub fn render(sheet: &Sheet, opts: &Opts) -> Vec<Line> {
             if ci > 0 {
                 line.extend(spaces(1));
             }
-            line.extend(markup::pad_right(col.get(r).cloned().unwrap_or_default(), col_w));
+            line.extend(markup::pad_right(
+                col.get(r).cloned().unwrap_or_default(),
+                col_w,
+            ));
         }
         out.push(line);
     }
@@ -197,23 +236,114 @@ pub fn render(sheet: &Sheet, opts: &Opts) -> Vec<Line> {
 /// One-line random tip: `sheet  command  — description`.
 pub fn tip(sheet_name: &str, sheet: &Sheet, cat: &Category, e: &crate::sheet::Entry) -> Line {
     let prim = primary(sheet);
-    let dim = Style { dim: Some(true), ..Default::default() };
+    let dim = Style {
+        dim: Some(true),
+        ..Default::default()
+    };
     let mut l: Line = plain("💡 ", Style::default());
-    l.extend(plain(&format!("{sheet_name} · {}: ", strip(&cat.name)), dim));
-    l.extend(parse(&e.command, Style { bold: Some(true), ..prim }));
+    l.extend(plain(
+        &format!("{sheet_name} · {}: ", strip(&cat.name)),
+        dim,
+    ));
+    l.extend(parse(
+        &e.command,
+        Style {
+            bold: Some(true),
+            ..prim
+        },
+    ));
     l.extend(plain(" — ", dim));
     l.extend(parse(&e.description, Style::default()));
-    l
+    markup::flatten(l)
 }
 
 fn strip(s: &str) -> String {
-    parse(s, Style::default()).iter().map(|c: &Cell| c.ch).collect()
+    parse(s, Style::default())
+        .iter()
+        .map(|c: &Cell| c.ch)
+        .collect()
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
     use crate::sheet;
+
+    fn text(lines: &[Line]) -> Vec<String> {
+        lines
+            .iter()
+            .map(|l| {
+                l.iter()
+                    .map(|c| c.ch)
+                    .collect::<String>()
+                    .trim_end()
+                    .to_string()
+            })
+            .collect()
+    }
+
+    #[test]
+    fn title_only_header_is_not_indented_for_a_missing_logo() {
+        let s = sheet::parse(
+            r#"{"TITLE":[{"ascii":["HELLO"]}],"A":[{"command":"a","description":"b"}]}"#,
+        )
+        .unwrap();
+        let t = text(&header(&s, 80));
+        assert_eq!(t[1], "  HELLO");
+    }
+
+    #[test]
+    fn logo_only_header_has_no_subtitle_and_fits() {
+        let s = sheet::parse(r#"{"LOGO":[{"ascii":["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]}],"A":[{"command":"a"}]}"#).unwrap();
+        assert!(!text(&header(&s, 80)).concat().contains("CheatBox"));
+        assert!(header(&s, 30).is_empty(), "too wide logo must be dropped");
+    }
+
+    #[test]
+    fn control_chars_do_not_break_boxes() {
+        let s = sheet::parse("{\"A\":[{\"command\":\"a\\tb\",\"description\":\"line1\\nline2\"}]}")
+            .unwrap();
+        for l in render(
+            &s,
+            &Opts {
+                width: 40,
+                header: false,
+            },
+        ) {
+            assert_eq!(markup::width(&l), 40);
+            assert!(l.iter().all(|c| !c.ch.is_control()));
+        }
+    }
+
+    #[test]
+    fn fuzz_random_markup_never_panics_or_overflows() {
+        let alphabet: Vec<char> = "ab [/]redbold on#0f0\\漢🚀\t\n".chars().collect();
+        let mut rng = fastrand::Rng::with_seed(7);
+        for _ in 0..3000 {
+            let mut gen = |n: usize| {
+                (0..rng.usize(0..n))
+                    .map(|_| alphabet[rng.usize(..alphabet.len())])
+                    .collect::<String>()
+            };
+            let json = serde_json::json!({
+                "LOGO": [{"ascii": [gen(30), gen(30)]}],
+                "TITLE": [{"ascii": [gen(40)]}],
+                gen(15): [{"command": gen(40), "description": gen(120)}],
+                "B": [{"command": gen(10), "description": gen(10)}],
+            });
+            let s = sheet::parse(&json.to_string()).unwrap();
+            let w = 30 + (gen(200).len() % 120);
+            for l in render(
+                &s,
+                &Opts {
+                    width: w,
+                    header: true,
+                },
+            ) {
+                assert!(markup::width(&l) <= w, "overflow at {w}: {json}");
+            }
+        }
+    }
 
     #[test]
     fn tags_span_logo_lines() {
@@ -231,7 +361,13 @@ mod tests {
         for (name, src) in sheet::discover(&[]) {
             let s = sheet::load(&src).unwrap();
             for w in [40, 80, 120, 150] {
-                let lines = render(&s, &Opts { width: w, header: true });
+                let lines = render(
+                    &s,
+                    &Opts {
+                        width: w,
+                        header: true,
+                    },
+                );
                 for l in &lines {
                     assert!(markup::width(l) <= w.max(30), "{name} @ {w}: line too wide");
                 }
