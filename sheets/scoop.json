@@ -1,0 +1,187 @@
+{
+  "LOGO": [
+    {
+      "ascii": [
+        "[khaki1]    _________[/]",
+        "[khaki1]   (_________)[/]",
+        "[khaki1]   |[/] [white]~\\scoop[/] [khaki1]|[/]",
+        "[khaki1]   |[/]  [dim]apps[/]   [khaki1]|[/]",
+        "[khaki1]   |_________|[/]",
+        "[dim]   no admin needed[/]"
+      ]
+    }
+  ],
+  "TITLE": [
+    {
+      "ascii": [
+        "   _____                      ",
+        "  / ___/_________  ____  ____ ",
+        "  \\__ \\/ ___/ __ \\/ __ \\/ __ \\",
+        " ___/ / /__/ /_/ / /_/ / /_/ /",
+        "/____/\\___/\\____/\\____/ .___/ ",
+        "                     /_/      "
+      ]
+    }
+  ],
+  "STYLE": {
+    "command_width": 34,
+    "outer_width": 150,
+    "primary_color": "khaki1"
+  },
+  "Setup": [
+    {
+      "command": "Set-ExecutionPolicy RemoteSigned -Scope CurrentUser",
+      "description": "Allow local scripts"
+    },
+    {
+      "command": "irm get.scoop.sh | iex",
+      "description": "Install Scoop (no admin)"
+    },
+    {
+      "command": "scoop install git",
+      "description": "Needed for buckets and updates"
+    },
+    {
+      "command": "scoop install aria2",
+      "description": "Parallel downloads"
+    },
+    {
+      "command": "scoop checkup",
+      "description": "Find common problems"
+    },
+    {
+      "command": "scoop config",
+      "description": "Show settings"
+    }
+  ],
+  "Install & Remove": [
+    {
+      "command": "scoop install <app>",
+      "description": "Install an app"
+    },
+    {
+      "command": "scoop install extras/<app>",
+      "description": "From a specific bucket"
+    },
+    {
+      "command": "scoop install <app>@<version>",
+      "description": "A specific version"
+    },
+    {
+      "command": "scoop uninstall <app>",
+      "description": "Uninstall"
+    },
+    {
+      "command": "scoop uninstall -p <app>",
+      "description": "Also delete persisted data"
+    },
+    {
+      "command": "scoop reset <app>",
+      "description": "Switch active version / fix shims"
+    }
+  ],
+  "Buckets": [
+    {
+      "command": "scoop bucket known",
+      "description": "Official buckets"
+    },
+    {
+      "command": "scoop bucket add extras",
+      "description": "GUI apps and more"
+    },
+    {
+      "command": "scoop bucket add versions",
+      "description": "Older and alternative versions"
+    },
+    {
+      "command": "scoop bucket add <name> <git-url>",
+      "description": "Custom bucket"
+    },
+    {
+      "command": "scoop bucket list",
+      "description": "Added buckets"
+    },
+    {
+      "command": "scoop bucket rm <name>",
+      "description": "Remove a bucket"
+    }
+  ],
+  "Update": [
+    {
+      "command": "scoop update",
+      "description": "Update Scoop and buckets"
+    },
+    {
+      "command": "scoop status",
+      "description": "What can be updated"
+    },
+    {
+      "command": "scoop update *",
+      "description": "Update all apps"
+    },
+    {
+      "command": "scoop update <app>",
+      "description": "Update one app"
+    },
+    {
+      "command": "scoop hold <app>",
+      "description": "Freeze an app's version"
+    },
+    {
+      "command": "scoop unhold <app>",
+      "description": "Unfreeze"
+    }
+  ],
+  "Info": [
+    {
+      "command": "scoop search <query>",
+      "description": "Search buckets"
+    },
+    {
+      "command": "scoop info <app>",
+      "description": "App details"
+    },
+    {
+      "command": "scoop list",
+      "description": "Installed apps"
+    },
+    {
+      "command": "scoop which <command>",
+      "description": "Where a command comes from"
+    },
+    {
+      "command": "scoop prefix <app>",
+      "description": "Install directory of an app"
+    },
+    {
+      "command": "scoop cat <app>",
+      "description": "Show the manifest"
+    }
+  ],
+  "Cleanup & Migrate": [
+    {
+      "command": "scoop cleanup *",
+      "description": "Remove old app versions"
+    },
+    {
+      "command": "scoop cache rm *",
+      "description": "Clear the download cache"
+    },
+    {
+      "command": "scoop export > scoopfile.json",
+      "description": "Save apps and buckets"
+    },
+    {
+      "command": "scoop import scoopfile.json",
+      "description": "Restore them on another PC"
+    },
+    {
+      "command": "~\\scoop\\apps\\",
+      "description": "Where apps live"
+    },
+    {
+      "command": "~\\scoop\\persist\\",
+      "description": "Data kept across updates"
+    }
+  ]
+}

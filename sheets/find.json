@@ -1,0 +1,160 @@
+{
+  "LOGO": [
+    {
+      "ascii": [
+        "[chartreuse3]     .---.[/]",
+        "[chartreuse3]    /[/] [white]*.rs[/][chartreuse3]\\\\[/]",
+        "[chartreuse3]    \\     /[/]",
+        "[chartreuse3]     '---'\\\\[/]",
+        "[chartreuse3]           \\\\[/]",
+        "[chartreuse3]            \\\\[/]"
+      ]
+    }
+  ],
+  "TITLE": [
+    {
+      "ascii": [
+        "    _____           __",
+        "   / __(_)___  ____/ /",
+        "  / /_/ / __ \\/ __  / ",
+        " / __/ / / / / /_/ /  ",
+        "/_/ /_/_/ /_/\\__,_/   "
+      ]
+    }
+  ],
+  "STYLE": {
+    "command_width": 34,
+    "outer_width": 145,
+    "primary_color": "chartreuse3"
+  },
+  "find: Match": [
+    {
+      "command": "find . -name '*.log'",
+      "description": "By name (quote the pattern!)"
+    },
+    {
+      "command": "find . -iname '*.jpg'",
+      "description": "Case-insensitive name"
+    },
+    {
+      "command": "find . -type d -name node_modules",
+      "description": "Directories only (f = files, l = links)"
+    },
+    {
+      "command": "find /var -size +100M",
+      "description": "Bigger than 100 MiB"
+    },
+    {
+      "command": "find . -mtime -7",
+      "description": "Modified in the last 7 days"
+    },
+    {
+      "command": "find . -mmin -30",
+      "description": "Modified in the last 30 minutes"
+    }
+  ],
+  "find: Act": [
+    {
+      "command": "find . -name '*.tmp' -delete",
+      "description": "Delete matches (test without -delete first)"
+    },
+    {
+      "command": "find . -type f -exec chmod 644 {} +",
+      "description": "Run a command on all matches"
+    },
+    {
+      "command": "find . -name '*.log' -print0 | xargs -0 gzip",
+      "description": "Safe with spaces in names"
+    },
+    {
+      "command": "find . -type d -empty -delete",
+      "description": "Remove empty directories"
+    },
+    {
+      "command": "find . -maxdepth 1 -type f",
+      "description": "Don't descend into subdirectories"
+    },
+    {
+      "command": "find . -type f -printf '%s %p\\n'",
+      "description": "Custom output: size and path"
+    }
+  ],
+  "find: Combine": [
+    {
+      "command": "find . -not -path '*/.git/*'",
+      "description": "Exclude a path"
+    },
+    {
+      "command": "find . \\( -name '*.c' -o -name '*.h' \\)",
+      "description": "OR of conditions"
+    },
+    {
+      "command": "find . -newer ref.txt",
+      "description": "Newer than a reference file"
+    },
+    {
+      "command": "find . -type f -perm /111",
+      "description": "Executable by anyone"
+    },
+    {
+      "command": "find . -user <name>",
+      "description": "Owned by a user"
+    },
+    {
+      "command": "find . -xtype l",
+      "description": "Broken symlinks"
+    }
+  ],
+  "fd: Basics": [
+    {
+      "command": "fd <pattern>",
+      "description": "Regex search in names, respects .gitignore"
+    },
+    {
+      "command": "fd -e rs",
+      "description": "By extension"
+    },
+    {
+      "command": "fd -g '*.json'",
+      "description": "Glob instead of regex"
+    },
+    {
+      "command": "fd -t d <pattern>",
+      "description": "Directories only"
+    },
+    {
+      "command": "fd -H <pattern>",
+      "description": "Include hidden files"
+    },
+    {
+      "command": "fd -I <pattern>",
+      "description": "Include git-ignored files"
+    }
+  ],
+  "fd: Act & Filter": [
+    {
+      "command": "fd -e jpg -x convert {} {.}.png",
+      "description": "Run per file ({.} = without extension)"
+    },
+    {
+      "command": "fd -e rs -X wc -l",
+      "description": "Run once with all files"
+    },
+    {
+      "command": "fd --changed-within 1d",
+      "description": "Changed in the last day"
+    },
+    {
+      "command": "fd -S +10m",
+      "description": "Bigger than 10 MB"
+    },
+    {
+      "command": "fd -E target <pattern>",
+      "description": "Exclude a directory"
+    },
+    {
+      "command": "fdfind",
+      "description": "Binary name on Debian/Ubuntu"
+    }
+  ]
+}

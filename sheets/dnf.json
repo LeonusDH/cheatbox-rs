@@ -1,0 +1,186 @@
+{
+  "LOGO": [
+    {
+      "ascii": [
+        "[dodger_blue2]  .-------.[/]",
+        "[dodger_blue2]  |[/] [white]rpm[/]   [dodger_blue2]|[/]---.",
+        "[dodger_blue2]  '-------'[/]   [dodger_blue2]|[/]",
+        "[dodger_blue2]  .-------.[/]   [dodger_blue2]v[/]",
+        "[dodger_blue2]  |[/] [white]rpm[/]   [dodger_blue2]|[/] [dim]/usr[/]",
+        "[dodger_blue2]  '-------'[/]"
+      ]
+    }
+  ],
+  "TITLE": [
+    {
+      "ascii": [
+        "       __      ____",
+        "  ____/ /___  / __/",
+        " / __  / __ \\/ /_  ",
+        "/ /_/ / / / / __/  ",
+        "\\__,_/_/ /_/_/     "
+      ]
+    }
+  ],
+  "STYLE": {
+    "command_width": 34,
+    "outer_width": 150,
+    "primary_color": "dodger_blue2"
+  },
+  "Install & Remove": [
+    {
+      "command": "dnf install <pkg>",
+      "description": "Install a package"
+    },
+    {
+      "command": "dnf install ./file.rpm",
+      "description": "Install a local .rpm with dependencies"
+    },
+    {
+      "command": "dnf remove <pkg>",
+      "description": "Remove a package"
+    },
+    {
+      "command": "dnf reinstall <pkg>",
+      "description": "Reinstall a package"
+    },
+    {
+      "command": "dnf swap <old> <new>",
+      "description": "Replace one package with another"
+    },
+    {
+      "command": "dnf autoremove",
+      "description": "Remove unneeded dependencies"
+    }
+  ],
+  "Update": [
+    {
+      "command": "dnf upgrade --refresh",
+      "description": "Refresh metadata and upgrade everything"
+    },
+    {
+      "command": "dnf check-upgrade",
+      "description": "What can be upgraded"
+    },
+    {
+      "command": "dnf upgrade <pkg>",
+      "description": "Upgrade one package"
+    },
+    {
+      "command": "dnf distro-sync",
+      "description": "Sync to repo versions (also downgrades)"
+    },
+    {
+      "command": "dnf system-upgrade download --releasever=<N>",
+      "description": "Prepare a Fedora release upgrade"
+    },
+    {
+      "command": "dnf system-upgrade reboot",
+      "description": "Reboot and apply it"
+    }
+  ],
+  "Search & Info": [
+    {
+      "command": "dnf search <term>",
+      "description": "Search packages"
+    },
+    {
+      "command": "dnf info <pkg>",
+      "description": "Package details"
+    },
+    {
+      "command": "dnf provides <file>",
+      "description": "Which package ships a file"
+    },
+    {
+      "command": "dnf list --installed",
+      "description": "Installed packages (dnf4: list installed)"
+    },
+    {
+      "command": "dnf repoquery -l <pkg>",
+      "description": "Files in a package"
+    },
+    {
+      "command": "dnf repoquery --whatrequires <pkg>",
+      "description": "What depends on it"
+    }
+  ],
+  "History": [
+    {
+      "command": "dnf history list",
+      "description": "Past transactions"
+    },
+    {
+      "command": "dnf history info <id>",
+      "description": "What a transaction changed"
+    },
+    {
+      "command": "dnf history undo <id>",
+      "description": "Revert one transaction"
+    },
+    {
+      "command": "dnf history rollback <id>",
+      "description": "Revert everything after <id>"
+    },
+    {
+      "command": "dnf mark user <pkg>",
+      "description": "Mark as explicit (dnf4: mark install)"
+    },
+    {
+      "command": "dnf versionlock add <pkg>",
+      "description": "Freeze a version (versionlock plugin)"
+    }
+  ],
+  "Repositories": [
+    {
+      "command": "dnf repolist --all",
+      "description": "All repos, enabled or not"
+    },
+    {
+      "command": "dnf config-manager setopt <repo>.enabled=0",
+      "description": "Disable a repo (dnf5)"
+    },
+    {
+      "command": "dnf config-manager addrepo --from-repofile=<url>",
+      "description": "Add a .repo file (dnf5)"
+    },
+    {
+      "command": "dnf copr enable <user>/<project>",
+      "description": "Enable a COPR repo"
+    },
+    {
+      "command": "dnf makecache",
+      "description": "Download metadata"
+    },
+    {
+      "command": "dnf clean all",
+      "description": "Drop cached metadata and packages"
+    }
+  ],
+  "Groups & rpm": [
+    {
+      "command": "dnf group list",
+      "description": "Package groups"
+    },
+    {
+      "command": "dnf group install \"<group>\"",
+      "description": "Install a group"
+    },
+    {
+      "command": "rpm -qa | grep <pkg>",
+      "description": "Is it installed"
+    },
+    {
+      "command": "rpm -qf /path/to/file",
+      "description": "Which installed package owns a file"
+    },
+    {
+      "command": "rpm -ql <pkg>",
+      "description": "Files of an installed package"
+    },
+    {
+      "command": "rpm -qi <pkg>",
+      "description": "Info about an installed package"
+    }
+  ]
+}

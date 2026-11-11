@@ -1,0 +1,164 @@
+{
+  "LOGO": [
+    {
+      "ascii": [
+        "[medium_orchid]      .---.[/]",
+        "[medium_orchid]     /     \\\\[/]",
+        "[medium_orchid]     |     |[/]",
+        "[medium_orchid]   .-'-----'-.[/]",
+        "[medium_orchid]   |[/]    [white]()[/]    [medium_orchid]|[/]",
+        "[medium_orchid]   |[/]    [white]||[/]    [medium_orchid]|[/]",
+        "[medium_orchid]   '---------'[/]"
+      ]
+    }
+  ],
+  "TITLE": [
+    {
+      "ascii": [
+        "   ____                  __________ __ ",
+        "  / __ \\____  ___  ____ / ___/ ___// / ",
+        " / / / / __ \\/ _ \\/ __ \\\\__ \\\\__ \\/ /  ",
+        "/ /_/ / /_/ /  __/ / / /__/ /__/ / /___",
+        "\\____/ .___/\\___/_/ /_/____/____/_____/",
+        "    /_/                                "
+      ]
+    }
+  ],
+  "STYLE": {
+    "command_width": 34,
+    "outer_width": 150,
+    "primary_color": "medium_orchid"
+  },
+  "Keys": [
+    {
+      "command": "openssl genpkey -algorithm ed25519 -out key.pem",
+      "description": "New Ed25519 private key"
+    },
+    {
+      "command": "openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:4096 -out key.pem",
+      "description": "New RSA 4096 key"
+    },
+    {
+      "command": "openssl pkey -in key.pem -pubout -out pub.pem",
+      "description": "Extract the public key"
+    },
+    {
+      "command": "openssl pkey -in key.pem -noout -text",
+      "description": "Inspect a key"
+    }
+  ],
+  "Certificates & CSR": [
+    {
+      "command": "openssl req -x509 -newkey rsa:2048 -nodes -keyout key.pem -out cert.pem -days 365 -subj '/CN=localhost' -addext 'subjectAltName=DNS:localhost'",
+      "description": "Self-signed cert + key in one go"
+    },
+    {
+      "command": "openssl req -new -key key.pem -out req.csr -subj '/CN=example.com'",
+      "description": "Create a signing request"
+    },
+    {
+      "command": "openssl req -in req.csr -noout -text",
+      "description": "Inspect a CSR"
+    },
+    {
+      "command": "openssl x509 -req -in req.csr -CA ca.pem -CAkey ca.key -out cert.pem -days 365",
+      "description": "Sign a CSR with your own CA"
+    }
+  ],
+  "Inspect Certificates": [
+    {
+      "command": "openssl x509 -in cert.pem -noout -text",
+      "description": "Everything"
+    },
+    {
+      "command": "openssl x509 -in cert.pem -noout -subject -issuer -dates",
+      "description": "Who, by whom, valid when"
+    },
+    {
+      "command": "openssl x509 -in cert.pem -noout -ext subjectAltName",
+      "description": "Domain names (OpenSSL 3)"
+    },
+    {
+      "command": "openssl x509 -in cert.pem -noout -fingerprint -sha256",
+      "description": "Fingerprint"
+    },
+    {
+      "command": "openssl x509 -in cert.pem -noout -checkend 2592000",
+      "description": "Exit 1 if expires within 30 days"
+    },
+    {
+      "command": "openssl verify -CAfile ca.pem cert.pem",
+      "description": "Verify against a CA"
+    }
+  ],
+  "Remote TLS": [
+    {
+      "command": "openssl s_client -connect host:443 -servername host",
+      "description": "Handshake, chain, protocol"
+    },
+    {
+      "command": "openssl s_client -connect host:443 -servername host </dev/null | openssl x509 -noout -dates",
+      "description": "Remote certificate expiry"
+    },
+    {
+      "command": "openssl s_client -connect host:443 -showcerts",
+      "description": "Print the whole chain"
+    },
+    {
+      "command": "openssl s_client -connect mail:587 -starttls smtp",
+      "description": "STARTTLS (smtp, imap, ...)"
+    },
+    {
+      "command": "openssl s_client -connect host:443 -tls1_3",
+      "description": "Force a TLS version"
+    }
+  ],
+  "Convert": [
+    {
+      "command": "openssl x509 -in cert.pem -outform der -out cert.der",
+      "description": "PEM -> DER"
+    },
+    {
+      "command": "openssl pkcs12 -export -in cert.pem -inkey key.pem -out bundle.p12",
+      "description": "Cert + key -> PKCS#12 / .pfx"
+    },
+    {
+      "command": "openssl pkcs12 -in bundle.p12 -nodes -out all.pem",
+      "description": "PKCS#12 -> PEM (old files: -legacy)"
+    },
+    {
+      "command": "openssl x509 -in cert.pem -noout -pubkey | sha256sum",
+      "description": "Does a key match a cert? Compare with:"
+    },
+    {
+      "command": "openssl pkey -in key.pem -pubout | sha256sum",
+      "description": "...the key's public part"
+    }
+  ],
+  "Handy": [
+    {
+      "command": "openssl rand -hex 32",
+      "description": "Random secret (hex)"
+    },
+    {
+      "command": "openssl rand -base64 24",
+      "description": "Random password"
+    },
+    {
+      "command": "openssl dgst -sha256 file",
+      "description": "Checksum of a file"
+    },
+    {
+      "command": "openssl passwd -6",
+      "description": "SHA-512 crypt hash for /etc/shadow"
+    },
+    {
+      "command": "openssl enc -aes-256-cbc -pbkdf2 -salt -in f -out f.enc",
+      "description": "Encrypt a file (-d to decrypt)"
+    },
+    {
+      "command": "openssl version -a",
+      "description": "Version and build info"
+    }
+  ]
+}

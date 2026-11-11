@@ -1,0 +1,178 @@
+{
+  "LOGO": [
+    {
+      "ascii": [
+        "",
+        "   [light_sea_green]C:\\\\[/] [white]<──────>[/]  [light_sea_green]~/[/]",
+        "  [light_sea_green]/mnt/c[/]          [light_sea_green]\\\\wsl$[/]",
+        "",
+        "[dim]  Linux inside Windows[/]",
+        ""
+      ]
+    }
+  ],
+  "TITLE": [
+    {
+      "ascii": [
+        " _       _______ __ ",
+        "| |     / / ___// / ",
+        "| | /| / /\\__ \\/ /  ",
+        "| |/ |/ /___/ / /___",
+        "|__/|__//____/_____/"
+      ]
+    }
+  ],
+  "STYLE": {
+    "command_width": 34,
+    "outer_width": 150,
+    "primary_color": "light_sea_green"
+  },
+  "Install & Distros": [
+    {
+      "command": "wsl --install",
+      "description": "Install WSL + Ubuntu"
+    },
+    {
+      "command": "wsl --install -d Debian",
+      "description": "Install a specific distro"
+    },
+    {
+      "command": "wsl -l -o",
+      "description": "Distros available online"
+    },
+    {
+      "command": "wsl -l -v",
+      "description": "Installed distros, state, WSL version"
+    },
+    {
+      "command": "wsl --set-default <distro>",
+      "description": "Default distro"
+    },
+    {
+      "command": "wsl --unregister <distro>",
+      "description": "Delete a distro WITH all its files"
+    }
+  ],
+  "Run & Stop": [
+    {
+      "command": "wsl ~",
+      "description": "Shell in your Linux home"
+    },
+    {
+      "command": "wsl -d <distro> -u root",
+      "description": "Specific distro as root"
+    },
+    {
+      "command": "wsl <command>",
+      "description": "Run one Linux command from Windows"
+    },
+    {
+      "command": "wsl -t <distro>",
+      "description": "Stop one distro"
+    },
+    {
+      "command": "wsl --shutdown",
+      "description": "Stop everything (apply .wslconfig)"
+    },
+    {
+      "command": "wsl --status",
+      "description": "Default distro and version"
+    }
+  ],
+  "Maintenance": [
+    {
+      "command": "wsl --update",
+      "description": "Update WSL itself"
+    },
+    {
+      "command": "wsl --version",
+      "description": "WSL, kernel and WSLg versions"
+    },
+    {
+      "command": "wsl --set-version <distro> 2",
+      "description": "Convert WSL 1 -> 2 (export first!)"
+    },
+    {
+      "command": "wsl --manage <distro> --set-sparse true",
+      "description": "Disk image shrinks automatically"
+    },
+    {
+      "command": "wsl --manage <distro> --move D:\\WSL\\<distro>",
+      "description": "Move a distro to another drive"
+    }
+  ],
+  "Backup & Restore": [
+    {
+      "command": "wsl --export <distro> backup.tar",
+      "description": "Back up a distro"
+    },
+    {
+      "command": "wsl --export <distro> backup.vhdx --vhd",
+      "description": "Back up as a disk image"
+    },
+    {
+      "command": "wsl --import <name> D:\\WSL\\<name> backup.tar",
+      "description": "Restore to any folder/name"
+    },
+    {
+      "command": "wsl --import-in-place <name> ext4.vhdx",
+      "description": "Register an existing .vhdx"
+    },
+    {
+      "command": "wsl --mount \\\\.\\PHYSICALDRIVE1 --partition 1",
+      "description": "Mount a Linux disk (admin)"
+    }
+  ],
+  "Files & Interop": [
+    {
+      "command": "\\\\wsl.localhost\\<distro>\\home",
+      "description": "Linux files from Windows Explorer"
+    },
+    {
+      "command": "/mnt/c/Users",
+      "description": "Windows drives from Linux"
+    },
+    {
+      "command": "explorer.exe .",
+      "description": "Open current Linux dir in Explorer"
+    },
+    {
+      "command": "code .",
+      "description": "VS Code in WSL mode"
+    },
+    {
+      "command": "wslpath -w ~/file",
+      "description": "Linux path -> Windows path"
+    },
+    {
+      "command": "~/projects",
+      "description": "Keep code here, not /mnt/c (much faster)"
+    }
+  ],
+  "Config": [
+    {
+      "command": "%UserProfile%\\.wslconfig",
+      "description": "Global: \\[wsl2] section"
+    },
+    {
+      "command": "memory=8GB  processors=4",
+      "description": "Limit the VM (in .wslconfig)"
+    },
+    {
+      "command": "networkingMode=mirrored",
+      "description": "Share Windows network, localhost both ways"
+    },
+    {
+      "command": "/etc/wsl.conf",
+      "description": "Per distro, inside Linux"
+    },
+    {
+      "command": "\\[boot] systemd=true",
+      "description": "Enable systemd (in wsl.conf)"
+    },
+    {
+      "command": "\\[user] default=<name>",
+      "description": "Default user (in wsl.conf)"
+    }
+  ]
+}

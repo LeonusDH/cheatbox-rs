@@ -1,0 +1,179 @@
+{
+  "LOGO": [
+    {
+      "ascii": [
+        "",
+        "[spring_green2]   .------.[/]",
+        "[spring_green2]   |[/] [white]https[/][spring_green2]|[/] [spring_green2]──>[/] [white]:8080[/]",
+        "[spring_green2]   '------'[/]",
+        "[dim]   auto TLS[/]",
+        ""
+      ]
+    }
+  ],
+  "TITLE": [
+    {
+      "ascii": [
+        "   ______          __    __     ",
+        "  / ____/___ _____/ /___/ /_  __",
+        " / /   / __ `/ __  / __  / / / /",
+        "/ /___/ /_/ / /_/ / /_/ / /_/ / ",
+        "\\____/\\__,_/\\__,_/\\__,_/\\__, /  ",
+        "                       /____/   "
+      ]
+    }
+  ],
+  "STYLE": {
+    "command_width": 34,
+    "outer_width": 150,
+    "primary_color": "spring_green2"
+  },
+  "CLI": [
+    {
+      "command": "caddy run",
+      "description": "Foreground, uses ./Caddyfile"
+    },
+    {
+      "command": "caddy reload --config /etc/caddy/Caddyfile",
+      "description": "Apply a config with zero downtime"
+    },
+    {
+      "command": "caddy validate --config /etc/caddy/Caddyfile",
+      "description": "Check a config without running it"
+    },
+    {
+      "command": "caddy fmt --overwrite Caddyfile",
+      "description": "Format a Caddyfile in place"
+    },
+    {
+      "command": "caddy adapt --config Caddyfile",
+      "description": "Show the generated JSON config"
+    },
+    {
+      "command": "systemctl reload caddy",
+      "description": "Reload the system service"
+    }
+  ],
+  "One-liners": [
+    {
+      "command": "caddy file-server --listen :8000 --browse",
+      "description": "Static file server with listing"
+    },
+    {
+      "command": "caddy reverse-proxy --from example.com --to localhost:8080",
+      "description": "Instant HTTPS reverse proxy"
+    },
+    {
+      "command": "caddy hash-password",
+      "description": "Hash for basic_auth"
+    },
+    {
+      "command": "caddy list-modules",
+      "description": "Installed modules"
+    },
+    {
+      "command": "caddy trust",
+      "description": "Install the local CA into the system store"
+    }
+  ],
+  "Caddyfile: Sites": [
+    {
+      "command": "example.com { ... }",
+      "description": "Site block — HTTPS is automatic"
+    },
+    {
+      "command": "reverse_proxy localhost:8080",
+      "description": "Proxy to a backend"
+    },
+    {
+      "command": "reverse_proxy a:80 b:80 { lb_policy round_robin }",
+      "description": "Load balancing"
+    },
+    {
+      "command": "root * /var/www/site",
+      "description": "Document root..."
+    },
+    {
+      "command": "file_server",
+      "description": "...and serve files from it"
+    },
+    {
+      "command": "encode zstd gzip",
+      "description": "Compress responses"
+    }
+  ],
+  "Caddyfile: Routing": [
+    {
+      "command": "handle /api/* { reverse_proxy api:8080 }",
+      "description": "Route by path"
+    },
+    {
+      "command": "handle_path /api/* { ... }",
+      "description": "Same, but strip the prefix"
+    },
+    {
+      "command": "@admin path /admin/*",
+      "description": "Named matcher (use as handle @admin)"
+    },
+    {
+      "command": "try_files {path} /index.html",
+      "description": "Single-page app fallback"
+    },
+    {
+      "command": "redir /old /new permanent",
+      "description": "Redirect"
+    },
+    {
+      "command": "respond /health \"OK\" 200",
+      "description": "Static response"
+    }
+  ],
+  "Caddyfile: TLS & Security": [
+    {
+      "command": "{ email you@example.com }",
+      "description": "Global options: ACME account email"
+    },
+    {
+      "command": "tls internal",
+      "description": "Local CA for LAN/dev hosts"
+    },
+    {
+      "command": "basic_auth { <user> <hash> }",
+      "description": "Password protection (before 2.8: basicauth)"
+    },
+    {
+      "command": "header Strict-Transport-Security \"max-age=31536000\"",
+      "description": "HSTS"
+    },
+    {
+      "command": "header -Server",
+      "description": "Remove a response header"
+    },
+    {
+      "command": "import snippet",
+      "description": "Reuse a (snippet) { ... } block"
+    }
+  ],
+  "Logs & Debug": [
+    {
+      "command": "log { output file /var/log/caddy/access.log }",
+      "description": "Access log for a site"
+    },
+    {
+      "command": "journalctl -u caddy -f",
+      "description": "Service logs"
+    },
+    {
+      "command": "{ debug }",
+      "description": "Global option: verbose logs"
+    },
+    {
+      "command": "curl localhost:2019/config/",
+      "description": "Live config via admin API"
+    },
+    {
+      "command": "{$DOMAIN}",
+      "description": "Environment variable in a Caddyfile"
+    }
+  ]
+}

@@ -1,0 +1,186 @@
+{
+  "LOGO": [
+    {
+      "ascii": [
+        "[red3]   .----------.[/]",
+        "[red3]   |[/]  [white].deb[/]    [red3]|[/]",
+        "[red3]   '----.-----'[/]",
+        "[red3]        |[/]",
+        "[red3]        v[/]   [dim]/usr[/]"
+      ]
+    }
+  ],
+  "TITLE": [
+    {
+      "ascii": [
+        "               __ ",
+        "  ____ _____  / /_",
+        " / __ `/ __ \\/ __/",
+        "/ /_/ / /_/ / /_  ",
+        "\\__,_/ .___/\\__/  ",
+        "    /_/           "
+      ]
+    }
+  ],
+  "STYLE": {
+    "command_width": 34,
+    "outer_width": 150,
+    "primary_color": "red3"
+  },
+  "Install & Remove": [
+    {
+      "command": "apt install <pkg>",
+      "description": "Install a package"
+    },
+    {
+      "command": "apt install ./file.deb",
+      "description": "Install a local .deb with dependencies"
+    },
+    {
+      "command": "apt install --no-install-recommends <pkg>",
+      "description": "Skip recommended extras"
+    },
+    {
+      "command": "apt remove <pkg>",
+      "description": "Remove, keep config files"
+    },
+    {
+      "command": "apt purge <pkg>",
+      "description": "Remove together with config files"
+    },
+    {
+      "command": "apt autoremove --purge",
+      "description": "Remove unneeded dependencies"
+    }
+  ],
+  "Update": [
+    {
+      "command": "apt update",
+      "description": "Refresh package lists"
+    },
+    {
+      "command": "apt upgrade",
+      "description": "Upgrade without removing packages"
+    },
+    {
+      "command": "apt full-upgrade",
+      "description": "Upgrade, may remove/replace packages"
+    },
+    {
+      "command": "apt list --upgradable",
+      "description": "What can be upgraded"
+    },
+    {
+      "command": "apt install --only-upgrade <pkg>",
+      "description": "Upgrade one package only"
+    },
+    {
+      "command": "dpkg-reconfigure unattended-upgrades",
+      "description": "Turn on automatic security updates"
+    }
+  ],
+  "Search & Info": [
+    {
+      "command": "apt search <term>",
+      "description": "Search names and descriptions"
+    },
+    {
+      "command": "apt show <pkg>",
+      "description": "Package details"
+    },
+    {
+      "command": "apt policy <pkg>",
+      "description": "Installed/candidate versions, repo priority"
+    },
+    {
+      "command": "apt list --installed",
+      "description": "Installed packages"
+    },
+    {
+      "command": "apt-cache rdepends --installed <pkg>",
+      "description": "Installed packages that need it"
+    },
+    {
+      "command": "apt-file search <file>",
+      "description": "Which package ships a file (apt-file update)"
+    }
+  ],
+  "dpkg": [
+    {
+      "command": "dpkg -l | grep <pkg>",
+      "description": "Is it installed, which version"
+    },
+    {
+      "command": "dpkg -L <pkg>",
+      "description": "Files installed by a package"
+    },
+    {
+      "command": "dpkg -S /path/to/file",
+      "description": "Which installed package owns a file"
+    },
+    {
+      "command": "dpkg -i file.deb",
+      "description": "Install a .deb (no dependency resolving)"
+    },
+    {
+      "command": "dpkg --configure -a",
+      "description": "Finish an interrupted install"
+    },
+    {
+      "command": "apt --fix-broken install",
+      "description": "Fix missing dependencies"
+    }
+  ],
+  "Versions & Holds": [
+    {
+      "command": "apt-mark hold <pkg>",
+      "description": "Freeze a package version"
+    },
+    {
+      "command": "apt-mark unhold <pkg>",
+      "description": "Unfreeze"
+    },
+    {
+      "command": "apt-mark showhold",
+      "description": "List frozen packages"
+    },
+    {
+      "command": "apt-cache madison <pkg>",
+      "description": "All available versions"
+    },
+    {
+      "command": "apt install <pkg>=<version>",
+      "description": "Install a specific version"
+    },
+    {
+      "command": "apt-mark auto|manual <pkg>",
+      "description": "Mark as dependency / explicit"
+    }
+  ],
+  "Repos & Cleanup": [
+    {
+      "command": "/etc/apt/sources.list.d/",
+      "description": "Repo files (*.sources = deb822 format)"
+    },
+    {
+      "command": "/etc/apt/keyrings/",
+      "description": "Repo keys, referenced via Signed-By"
+    },
+    {
+      "command": "add-apt-repository ppa:<user>/<ppa>",
+      "description": "Add a PPA (Ubuntu)"
+    },
+    {
+      "command": "apt-get changelog <pkg>",
+      "description": "Show the package changelog"
+    },
+    {
+      "command": "apt clean",
+      "description": "Delete all downloaded .deb files"
+    },
+    {
+      "command": "apt autoclean",
+      "description": "Delete only outdated .deb files"
+    }
+  ]
+}

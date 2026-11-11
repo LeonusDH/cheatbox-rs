@@ -1,0 +1,160 @@
+{
+  "LOGO": [
+    {
+      "ascii": [
+        "",
+        "  [gold3]s/old/new/g[/]",
+        "",
+        "  [dim]$1[/]   [dim]$2[/]   [gold3]$3[/]",
+        "  [dim]ab[/]   [dim]cd[/]   [gold3]42[/]",
+        ""
+      ]
+    }
+  ],
+  "TITLE": [
+    {
+      "ascii": [
+        "                  __   ___                       __  ",
+        "   ________  ____/ /  ( _ )      ____ __      __/ /__",
+        "  / ___/ _ \\/ __  /  / __ \\/|   / __ `/ | /| / / //_/",
+        " (__  )  __/ /_/ /  / /_/  <   / /_/ /| |/ |/ / ,<   ",
+        "/____/\\___/\\__,_/   \\____/\\/   \\__,_/ |__/|__/_/|_|  "
+      ]
+    }
+  ],
+  "STYLE": {
+    "command_width": 34,
+    "outer_width": 145,
+    "primary_color": "gold3"
+  },
+  "sed: Substitute": [
+    {
+      "command": "sed 's/old/new/' file",
+      "description": "First match on each line"
+    },
+    {
+      "command": "sed 's/old/new/g' file",
+      "description": "All matches"
+    },
+    {
+      "command": "sed -i 's/old/new/g' file",
+      "description": "Edit in place (macOS: -i '')"
+    },
+    {
+      "command": "sed -i.bak 's/old/new/g' file",
+      "description": "In place with a backup"
+    },
+    {
+      "command": "sed -E 's/([0-9]+)/<\\1>/g' file",
+      "description": "Extended regex with groups"
+    },
+    {
+      "command": "sed 's|/usr|/opt|g' file",
+      "description": "Other delimiter for paths"
+    }
+  ],
+  "sed: Lines": [
+    {
+      "command": "sed -n '10,20p' file",
+      "description": "Print lines 10-20"
+    },
+    {
+      "command": "sed -n '/start/,/end/p' file",
+      "description": "Print a range between patterns"
+    },
+    {
+      "command": "sed '/^#/d' file",
+      "description": "Delete comment lines"
+    },
+    {
+      "command": "sed '/^$/d' file",
+      "description": "Delete empty lines"
+    },
+    {
+      "command": "sed '1d' file",
+      "description": "Delete the first line"
+    },
+    {
+      "command": "sed '3i new line' file",
+      "description": "Insert before line 3 (a = after)"
+    }
+  ],
+  "awk: Fields & Filters": [
+    {
+      "command": "awk '{print $1}' file",
+      "description": "First column (split on whitespace)"
+    },
+    {
+      "command": "awk -F: '{print $1}' /etc/passwd",
+      "description": "Custom separator"
+    },
+    {
+      "command": "awk '{print $NF}' file",
+      "description": "Last column"
+    },
+    {
+      "command": "awk 'NR>1' file",
+      "description": "Skip the header line"
+    },
+    {
+      "command": "awk '$3 > 100' file",
+      "description": "Rows where column 3 > 100"
+    },
+    {
+      "command": "awk 'length > 80' file",
+      "description": "Lines longer than 80 chars"
+    }
+  ],
+  "awk: Compute": [
+    {
+      "command": "awk '{s+=$1} END {print s}' file",
+      "description": "Sum a column"
+    },
+    {
+      "command": "awk '{s+=$1} END {print s/NR}' file",
+      "description": "Average"
+    },
+    {
+      "command": "awk '{c[$1]++} END {for (k in c) print c[k], k}' file",
+      "description": "Count by key"
+    },
+    {
+      "command": "awk '!seen[$0]++' file",
+      "description": "Remove duplicates, keep order"
+    },
+    {
+      "command": "awk -v OFS=, '{$1=$1} 1' file",
+      "description": "Re-join columns with commas"
+    },
+    {
+      "command": "awk '{printf \"%-10s %s\\n\", $1, $2}' file",
+      "description": "Formatted output"
+    }
+  ],
+  "Friends": [
+    {
+      "command": "sort | uniq -c | sort -rn",
+      "description": "Frequency table"
+    },
+    {
+      "command": "cut -d: -f1,3 file",
+      "description": "Columns by delimiter"
+    },
+    {
+      "command": "tr 'a-z' 'A-Z'",
+      "description": "Translate characters"
+    },
+    {
+      "command": "column -t",
+      "description": "Align columns"
+    },
+    {
+      "command": "paste -sd+ file | bc",
+      "description": "Sum numbers, one per line"
+    },
+    {
+      "command": "tail -f file | grep --line-buffered x",
+      "description": "Filter a live log"
+    }
+  ]
+}

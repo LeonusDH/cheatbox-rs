@@ -1,0 +1,177 @@
+{
+  "LOGO": [
+    {
+      "ascii": [
+        "[tan]   _________[/]",
+        "[tan]  |[/][white]|=|[/]      [tan]|[/]",
+        "[tan]  |[/][white]|=|[/] [dim].tar[/] [tan]|[/]",
+        "[tan]  |[/][white]|=|[/] [dim].zst[/] [tan]|[/]",
+        "[tan]  |_________|[/]"
+      ]
+    }
+  ],
+  "TITLE": [
+    {
+      "ascii": [
+        "   __            ",
+        "  / /_____ ______",
+        " / __/ __ `/ ___/",
+        "/ /_/ /_/ / /    ",
+        "\\__/\\__,_/_/     "
+      ]
+    }
+  ],
+  "STYLE": {
+    "command_width": 34,
+    "outer_width": 145,
+    "primary_color": "tan"
+  },
+  "tar: Create": [
+    {
+      "command": "tar -czf a.tar.gz dir/",
+      "description": "Create gzip archive"
+    },
+    {
+      "command": "tar -cJf a.tar.xz dir/",
+      "description": "Create xz archive"
+    },
+    {
+      "command": "tar --zstd -cf a.tar.zst dir/",
+      "description": "Create zstd archive"
+    },
+    {
+      "command": "tar -caf a.tar.zst dir/",
+      "description": "Compression from the extension"
+    },
+    {
+      "command": "tar --exclude='*.log' -czf a.tar.gz dir/",
+      "description": "Exclude files"
+    },
+    {
+      "command": "tar -cf - dir/ | ssh host 'tar -xf - -C /dst'",
+      "description": "Copy a tree over SSH"
+    }
+  ],
+  "tar: Extract & List": [
+    {
+      "command": "tar -xf a.tar.gz",
+      "description": "Extract (compression auto-detected)"
+    },
+    {
+      "command": "tar -xf a.tar.gz -C /dst",
+      "description": "Extract into a directory"
+    },
+    {
+      "command": "tar -tf a.tar.gz",
+      "description": "List contents"
+    },
+    {
+      "command": "tar -xf a.tar.gz path/in/archive",
+      "description": "Extract one file or dir"
+    },
+    {
+      "command": "tar -xf a.tar.gz --strip-components=1",
+      "description": "Drop the top-level directory"
+    },
+    {
+      "command": "tar -xvf a.tar.gz",
+      "description": "Verbose: show each file"
+    }
+  ],
+  "gzip / xz / zstd": [
+    {
+      "command": "gzip -k file",
+      "description": "Compress, keep the original"
+    },
+    {
+      "command": "gunzip file.gz",
+      "description": "Decompress"
+    },
+    {
+      "command": "zcat file.gz | less",
+      "description": "Read without unpacking (xzcat, zstdcat)"
+    },
+    {
+      "command": "xz -T0 -9 file",
+      "description": "Max xz compression on all cores"
+    },
+    {
+      "command": "zstd -19 -T0 file",
+      "description": "Strong zstd compression on all cores"
+    },
+    {
+      "command": "zstd -d file.zst",
+      "description": "Decompress zstd"
+    }
+  ],
+  "zip": [
+    {
+      "command": "zip -r a.zip dir/",
+      "description": "Create a zip"
+    },
+    {
+      "command": "unzip a.zip -d dst/",
+      "description": "Extract into a directory"
+    },
+    {
+      "command": "unzip -l a.zip",
+      "description": "List contents"
+    },
+    {
+      "command": "zip -r -e secret.zip dir/",
+      "description": "Password-protected (weak ZipCrypto)"
+    },
+    {
+      "command": "unzip -o a.zip",
+      "description": "Overwrite without asking"
+    },
+    {
+      "command": "zip -d a.zip 'path/*'",
+      "description": "Delete entries from a zip"
+    }
+  ],
+  "7z": [
+    {
+      "command": "7z a a.7z dir/",
+      "description": "Create an archive"
+    },
+    {
+      "command": "7z x a.7z",
+      "description": "Extract with full paths"
+    },
+    {
+      "command": "7z l a.7z",
+      "description": "List contents"
+    },
+    {
+      "command": "7z t a.7z",
+      "description": "Test integrity"
+    },
+    {
+      "command": "7z a -p -mhe=on a.7z dir/",
+      "description": "AES encryption, file names hidden too"
+    }
+  ],
+  "Which one?": [
+    {
+      "command": "zstd",
+      "description": "Fast and strong: the best default"
+    },
+    {
+      "command": "xz",
+      "description": "Smallest files, slow to compress"
+    },
+    {
+      "command": "gzip",
+      "description": "Works everywhere, fast, larger files"
+    },
+    {
+      "command": "zip",
+      "description": "Best for sharing with Windows users"
+    },
+    {
+      "command": "7z",
+      "description": "Strong ratio and real AES encryption"
+    }
+  ]
+}

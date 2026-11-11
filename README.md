@@ -8,8 +8,10 @@
 Все листы — в [PREVIEWS.md](PREVIEWS.md).
 
 - один бинарник без Python, `uv`, `rich` и `pick`; листы встроены внутрь;
-- 14 встроенных листов: из оригинала — `linux`, `docker`, `kubernetes`, `npm`, `bun`, `tmux`;
-  новые — `podman`, `git`, `systemd`, `cargo`, `gradle` (с блоком про моддинг Minecraft), `ssh`, `ufw`, `nftables`;
+- 29 встроенных листов — Linux и сервер (`linux`, `systemd`, `ssh`, `tmux`), пакетные менеджеры (`apt`, `dnf`, `pacman`),
+  поиск/текст/архивы (`find`, `grep`, `sed-awk`, `tar`), сеть и безопасность (`ufw`, `nftables`, `crowdsec`, `openssl`, `nginx`, `caddy`),
+  контейнеры (`docker`, `podman`, `kubernetes`), разработка (`git`, `cargo`, `gradle`, `npm`, `bun`) и Windows (`winget`, `scoop`, `pwsh`, `wsl`);
+  `gradle` — с блоком про моддинг Minecraft
 - формат `*.json` **полностью совместим** с оригиналом (`LOGO`, `TITLE`, `STYLE`, категории) — листы из upstream кладутся как есть;
 - разметка `rich` в логотипах: `[bold red]…[/]`, `[on blue]`, `[#ff8800]`, все 256 именованных цветов (`misty_rose3`, `navajo_white1`…);
 - подстраивается под ширину терминала (две колонки → одна), колонки всегда ровные.
@@ -93,3 +95,4 @@ python tools/preview.py ufw git    # только некоторые
 ## Лицензия
 
 GPL-3.0-or-later, как и оригинал. Листы linux/docker/kubernetes/npm/bun/tmux взяты из fatinul/cheatbox, остальные написаны для этого порта.
+Команды в новых листах проверены запуском (где это возможно вне Windows/Fedora/Arch) или по официальной документации.

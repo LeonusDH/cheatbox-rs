@@ -1,0 +1,186 @@
+{
+  "LOGO": [
+    {
+      "ascii": [
+        "",
+        "[steel_blue1]  .------------------.[/]",
+        "[steel_blue1]  |[/] [white]PS C:\\>[/] [steel_blue1]_[/]        [steel_blue1]|[/]",
+        "[steel_blue1]  '------------------'[/]",
+        "[dim]   objects, not text[/]",
+        ""
+      ]
+    }
+  ],
+  "TITLE": [
+    {
+      "ascii": [
+        "    ____                          _____ __         ____",
+        "   / __ \\____ _      _____  _____/ ___// /_  ___  / / /",
+        "  / /_/ / __ \\ | /| / / _ \\/ ___/\\__ \\/ __ \\/ _ \\/ / / ",
+        " / ____/ /_/ / |/ |/ /  __/ /   ___/ / / / /  __/ / /  ",
+        "/_/    \\____/|__/|__/\\___/_/   /____/_/ /_/\\___/_/_/   "
+      ]
+    }
+  ],
+  "STYLE": {
+    "command_width": 34,
+    "outer_width": 150,
+    "primary_color": "steel_blue1"
+  },
+  "Files (Unix equivalent)": [
+    {
+      "command": "Get-ChildItem -Force",
+      "description": "ls -a (alias: gci, ls, dir)"
+    },
+    {
+      "command": "Get-ChildItem -Recurse -Filter *.log",
+      "description": "find -name '*.log'"
+    },
+    {
+      "command": "New-Item -ItemType Directory -Force a/b",
+      "description": "mkdir -p"
+    },
+    {
+      "command": "Copy-Item -Recurse src dst",
+      "description": "cp -r"
+    },
+    {
+      "command": "Remove-Item -Recurse -Force dir",
+      "description": "rm -rf"
+    },
+    {
+      "command": "Test-Path <path>",
+      "description": "Does it exist?"
+    }
+  ],
+  "Text": [
+    {
+      "command": "Select-String -Pattern 'err' -Path *.log",
+      "description": "grep (alias: sls)"
+    },
+    {
+      "command": "Get-Content f -Tail 20 -Wait",
+      "description": "tail -f"
+    },
+    {
+      "command": "Get-Content f -TotalCount 10",
+      "description": "head"
+    },
+    {
+      "command": "(Get-Content f) -replace 'old','new' | Set-Content f",
+      "description": "sed -i (regex)"
+    },
+    {
+      "command": "(Get-Content f | Measure-Object -Line).Lines",
+      "description": "wc -l"
+    },
+    {
+      "command": "Set-Content f 'text' -Encoding utf8",
+      "description": "Write a file"
+    }
+  ],
+  "Pipeline": [
+    {
+      "command": "Get-Process | Where-Object CPU -gt 100",
+      "description": "Filter objects (alias: ?)"
+    },
+    {
+      "command": "Sort-Object CPU -Descending | Select-Object -First 5",
+      "description": "Sort, take top 5"
+    },
+    {
+      "command": "ForEach-Object { $_.Name }",
+      "description": "Per item (alias: %)"
+    },
+    {
+      "command": "Get-Member",
+      "description": "Which properties an object has (gm)"
+    },
+    {
+      "command": "Group-Object Name | Sort-Object Count",
+      "description": "Count by key"
+    },
+    {
+      "command": "Format-Table -AutoSize",
+      "description": "Table output (ft)"
+    }
+  ],
+  "Data & Web": [
+    {
+      "command": "Get-Content f.json | ConvertFrom-Json",
+      "description": "Parse JSON into objects"
+    },
+    {
+      "command": "ConvertTo-Json -Depth 5",
+      "description": "Objects to JSON"
+    },
+    {
+      "command": "Import-Csv f.csv | Export-Csv out.csv",
+      "description": "CSV in/out"
+    },
+    {
+      "command": "Invoke-RestMethod <url>",
+      "description": "HTTP call, JSON parsed (irm)"
+    },
+    {
+      "command": "Invoke-WebRequest <url> -OutFile f",
+      "description": "Download a file (iwr)"
+    },
+    {
+      "command": "Test-Connection <host>",
+      "description": "ping"
+    }
+  ],
+  "System": [
+    {
+      "command": "Get-Process <name> | Stop-Process",
+      "description": "kill"
+    },
+    {
+      "command": "Get-Service | Where-Object Status -eq Running",
+      "description": "Running services (Windows)"
+    },
+    {
+      "command": "Restart-Service <name>",
+      "description": "Restart a service (Windows)"
+    },
+    {
+      "command": "Get-NetTCPConnection -LocalPort 25565",
+      "description": "Who listens on a port (Windows)"
+    },
+    {
+      "command": "Test-NetConnection <host> -Port 443",
+      "description": "Is a port reachable (Windows)"
+    },
+    {
+      "command": "$env:PATH -split ';'",
+      "description": "Environment variables"
+    }
+  ],
+  "Shell & Help": [
+    {
+      "command": "$PROFILE",
+      "description": "Path of your profile script"
+    },
+    {
+      "command": "Get-Help <cmd> -Examples",
+      "description": "Examples for a command"
+    },
+    {
+      "command": "Get-Command *net*",
+      "description": "Find commands"
+    },
+    {
+      "command": "Get-Alias ls",
+      "description": "What an alias points to"
+    },
+    {
+      "command": "Set-ExecutionPolicy RemoteSigned -Scope CurrentUser",
+      "description": "Allow local scripts"
+    },
+    {
+      "command": "$PSVersionTable",
+      "description": "PowerShell version"
+    }
+  ]
+}

@@ -1,0 +1,165 @@
+{
+  "LOGO": [
+    {
+      "ascii": [
+        "",
+        "[dim]  fn main() {[/]",
+        "[dim]      let[/] [black on light_salmon1]needle[/] [dim]= 42;[/]",
+        "[dim]  }[/]",
+        "[light_salmon1]  src/main.rs:2[/]",
+        ""
+      ]
+    }
+  ],
+  "TITLE": [
+    {
+      "ascii": [
+        "                        ",
+        "   ____ _________  ____ ",
+        "  / __ `/ ___/ _ \\/ __ \\",
+        " / /_/ / /  /  __/ /_/ /",
+        " \\__, /_/   \\___/ .___/ ",
+        "/____/         /_/      "
+      ]
+    }
+  ],
+  "STYLE": {
+    "command_width": 33,
+    "outer_width": 145,
+    "primary_color": "light_salmon1"
+  },
+  "grep: Basics": [
+    {
+      "command": "grep -r 'text' .",
+      "description": "Search recursively"
+    },
+    {
+      "command": "grep -i 'text' file",
+      "description": "Ignore case"
+    },
+    {
+      "command": "grep -n 'text' file",
+      "description": "Show line numbers"
+    },
+    {
+      "command": "grep -v 'text' file",
+      "description": "Lines that do NOT match"
+    },
+    {
+      "command": "grep -w 'word' file",
+      "description": "Whole words only"
+    },
+    {
+      "command": "grep -c 'text' file",
+      "description": "Count matching lines"
+    }
+  ],
+  "grep: Output & Context": [
+    {
+      "command": "grep -C 3 'text' file",
+      "description": "3 lines around (-A after, -B before)"
+    },
+    {
+      "command": "grep -l 'text' -r .",
+      "description": "Only names of matching files"
+    },
+    {
+      "command": "grep -L 'text' -r .",
+      "description": "Files without a match"
+    },
+    {
+      "command": "grep -o 'pattern' file",
+      "description": "Print only the matched part"
+    },
+    {
+      "command": "grep -m 1 'text' file",
+      "description": "Stop after the first match"
+    },
+    {
+      "command": "grep -r --include='*.py' 'text' .",
+      "description": "Only some files"
+    }
+  ],
+  "grep: Patterns": [
+    {
+      "command": "grep -E 'warn|error' file",
+      "description": "Extended regex (|, +, ?, {})"
+    },
+    {
+      "command": "grep -F 'a.b[1]' file",
+      "description": "Fixed string, no regex"
+    },
+    {
+      "command": "grep -P '\\d{3}-\\d{4}' file",
+      "description": "Perl regex (\\d, lookarounds)"
+    },
+    {
+      "command": "grep -e one -e two file",
+      "description": "Several patterns"
+    },
+    {
+      "command": "grep -f patterns.txt file",
+      "description": "Patterns from a file"
+    },
+    {
+      "command": "grep -x 'line' file",
+      "description": "Whole line must match"
+    }
+  ],
+  "ripgrep: Basics": [
+    {
+      "command": "rg 'text'",
+      "description": "Recursive, respects .gitignore, fast"
+    },
+    {
+      "command": "rg -S 'text'",
+      "description": "Smart case: ignore case if all lowercase"
+    },
+    {
+      "command": "rg -t rust 'fn main'",
+      "description": "Only a file type (rg --type-list)"
+    },
+    {
+      "command": "rg -g '*.toml' 'version'",
+      "description": "Only a glob"
+    },
+    {
+      "command": "rg -g '!target/' 'text'",
+      "description": "Exclude a glob"
+    },
+    {
+      "command": "rg -uu 'text'",
+      "description": "Also hidden and ignored files"
+    }
+  ],
+  "ripgrep: More": [
+    {
+      "command": "rg -F 'a.b(c)'",
+      "description": "Fixed string"
+    },
+    {
+      "command": "rg -w -C 2 'word'",
+      "description": "Whole word with context"
+    },
+    {
+      "command": "rg -l 'text'",
+      "description": "Only file names"
+    },
+    {
+      "command": "rg -c 'text'",
+      "description": "Count per file"
+    },
+    {
+      "command": "rg 'v(\\d+)' -r 'version $1'",
+      "description": "Rewrite matches in output (files untouched)"
+    },
+    {
+      "command": "rg -U 'start\\n.*end'",
+      "description": "Multiline search"
+    },
+    {
+      "command": "rg --files",
+      "description": "List files rg would search"
+    }
+  ]
+}

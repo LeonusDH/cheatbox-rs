@@ -1,0 +1,167 @@
+{
+  "LOGO": [
+    {
+      "ascii": [
+        "",
+        "[cornflower_blue]  .------------------.[/]",
+        "[cornflower_blue]  |[/] [white]PS>[/] winget up_  [cornflower_blue]|[/]",
+        "[cornflower_blue]  '------------------'[/]",
+        "[dim]   apps, one command[/]",
+        ""
+      ]
+    }
+  ],
+  "TITLE": [
+    {
+      "ascii": [
+        "           _                  __ ",
+        " _      __(_)___  ____ ____  / /_",
+        "| | /| / / / __ \\/ __ `/ _ \\/ __/",
+        "| |/ |/ / / / / / /_/ /  __/ /_  ",
+        "|__/|__/_/_/ /_/\\__, /\\___/\\__/  ",
+        "               /____/            "
+      ]
+    }
+  ],
+  "STYLE": {
+    "command_width": 34,
+    "outer_width": 150,
+    "primary_color": "cornflower_blue"
+  },
+  "Search & Info": [
+    {
+      "command": "winget search <name>",
+      "description": "Find packages"
+    },
+    {
+      "command": "winget show --id <Id>",
+      "description": "Package details, versions, URLs"
+    },
+    {
+      "command": "winget list",
+      "description": "Installed apps (winget or not)"
+    },
+    {
+      "command": "winget list --upgrade-available",
+      "description": "Installed apps with updates"
+    },
+    {
+      "command": "winget source update",
+      "description": "Refresh package sources"
+    },
+    {
+      "command": "winget --info",
+      "description": "Version, log and settings paths"
+    }
+  ],
+  "Install & Remove": [
+    {
+      "command": "winget install --id Git.Git -e",
+      "description": "Install by exact ID (safest)"
+    },
+    {
+      "command": "winget install --id <Id> --version <v>",
+      "description": "A specific version"
+    },
+    {
+      "command": "winget install --id <Id> --scope user",
+      "description": "Per-user install (or machine)"
+    },
+    {
+      "command": "winget uninstall --id <Id>",
+      "description": "Uninstall"
+    },
+    {
+      "command": "winget repair --id <Id>",
+      "description": "Repair an installed app"
+    },
+    {
+      "command": "winget download --id <Id>",
+      "description": "Download the installer only"
+    }
+  ],
+  "Upgrade": [
+    {
+      "command": "winget upgrade",
+      "description": "List available updates"
+    },
+    {
+      "command": "winget upgrade --id <Id>",
+      "description": "Upgrade one app"
+    },
+    {
+      "command": "winget upgrade --all",
+      "description": "Upgrade everything"
+    },
+    {
+      "command": "winget upgrade --all --include-unknown",
+      "description": "Also apps with unknown version"
+    },
+    {
+      "command": "--silent --accept-package-agreements --accept-source-agreements",
+      "description": "Unattended (for scripts/schedulers)"
+    },
+    {
+      "command": "--include-pinned",
+      "description": "Also upgrade soft-pinned apps"
+    }
+  ],
+  "Pins": [
+    {
+      "command": "winget pin add --id <Id>",
+      "description": "Skip in upgrade --all"
+    },
+    {
+      "command": "winget pin add --id <Id> --blocking",
+      "description": "Block even explicit upgrades"
+    },
+    {
+      "command": "winget pin add --id <Id> --version 1.2.*",
+      "description": "Allow only a version range"
+    },
+    {
+      "command": "winget pin list",
+      "description": "Current pins"
+    },
+    {
+      "command": "winget pin remove --id <Id>",
+      "description": "Remove a pin"
+    }
+  ],
+  "Migrate a PC": [
+    {
+      "command": "winget export -o apps.json",
+      "description": "Save the list of installed apps"
+    },
+    {
+      "command": "winget export -o apps.json --include-versions",
+      "description": "...with exact versions"
+    },
+    {
+      "command": "winget import -i apps.json --accept-package-agreements",
+      "description": "Reinstall them on another PC"
+    },
+    {
+      "command": "winget configure -f setup.winget",
+      "description": "Apply a DSC configuration file"
+    }
+  ],
+  "Troubleshooting": [
+    {
+      "command": "winget settings",
+      "description": "Open settings.json"
+    },
+    {
+      "command": "winget source reset --force",
+      "description": "Reset broken sources (admin)"
+    },
+    {
+      "command": "Repair-WinGetPackageManager",
+      "description": "Fix winget itself (Microsoft.WinGet.Client)"
+    },
+    {
+      "command": "-e",
+      "description": "Exact match: avoids installing the wrong app"
+    }
+  ]
+}

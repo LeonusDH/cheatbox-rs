@@ -1,0 +1,195 @@
+{
+  "LOGO": [
+    {
+      "ascii": [
+        "[green3]  .-----------.[/]",
+        "[green3]  |[/] [white]o o[/]  [dim]=====[/] [green3]|[/]",
+        "[green3]  |-----------|[/]",
+        "[green3]  |[/] [white]o o[/]  [dim]=====[/] [green3]|[/]",
+        "[green3]  '-----------'[/]",
+        "[green3]   :80[/]  [green3]:443[/]"
+      ]
+    }
+  ],
+  "TITLE": [
+    {
+      "ascii": [
+        "                _           ",
+        "   ____  ____ _(_)___  _  __",
+        "  / __ \\/ __ `/ / __ \\| |/_/",
+        " / / / / /_/ / / / / />  <  ",
+        "/_/ /_/\\__, /_/_/ /_/_/|_|  ",
+        "      /____/                "
+      ]
+    }
+  ],
+  "STYLE": {
+    "command_width": 34,
+    "outer_width": 150,
+    "primary_color": "green3"
+  },
+  "Control": [
+    {
+      "command": "nginx -t",
+      "description": "Test the config — always before reload"
+    },
+    {
+      "command": "systemctl reload nginx",
+      "description": "Apply config without dropping connections"
+    },
+    {
+      "command": "nginx -T",
+      "description": "Print the full merged config"
+    },
+    {
+      "command": "nginx -V",
+      "description": "Version and compiled modules"
+    },
+    {
+      "command": "tail -f /var/log/nginx/error.log",
+      "description": "Watch errors"
+    },
+    {
+      "command": "ln -s ../sites-available/x /etc/nginx/sites-enabled/",
+      "description": "Enable a site (Debian layout)"
+    }
+  ],
+  "Server Block": [
+    {
+      "command": "listen 443 ssl;",
+      "description": "HTTPS listener (add [::]:443 for IPv6)"
+    },
+    {
+      "command": "http2 on;",
+      "description": "HTTP/2 (1.25.1+; older: listen 443 ssl http2)"
+    },
+    {
+      "command": "server_name example.com www.example.com;",
+      "description": "Which hosts this block serves"
+    },
+    {
+      "command": "root /var/www/site;",
+      "description": "Document root"
+    },
+    {
+      "command": "index index.html;",
+      "description": "Default file for directories"
+    },
+    {
+      "command": "return 301 https://$host$request_uri;",
+      "description": "Redirect HTTP to HTTPS"
+    }
+  ],
+  "Locations": [
+    {
+      "command": "location / { try_files $uri $uri/ =404; }",
+      "description": "Static files"
+    },
+    {
+      "command": "location / { try_files $uri /index.html; }",
+      "description": "Single-page app"
+    },
+    {
+      "command": "location = /health { return 200; }",
+      "description": "Exact match"
+    },
+    {
+      "command": "location ^~ /static/ { ... }",
+      "description": "Prefix, skip regex checks"
+    },
+    {
+      "command": "location ~* \\.(png|jpg|css|js)$ { expires 30d; }",
+      "description": "Regex, case-insensitive"
+    },
+    {
+      "command": "alias /data/files/;",
+      "description": "Map a location to another directory"
+    }
+  ],
+  "Reverse Proxy": [
+    {
+      "command": "proxy_pass http://127.0.0.1:8080;",
+      "description": "Forward to a backend"
+    },
+    {
+      "command": "proxy_set_header Host $host;",
+      "description": "Keep the original Host"
+    },
+    {
+      "command": "proxy_set_header X-Real-IP $remote_addr;",
+      "description": "Client IP for the backend"
+    },
+    {
+      "command": "proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;",
+      "description": "Proxy chain"
+    },
+    {
+      "command": "proxy_set_header X-Forwarded-Proto $scheme;",
+      "description": "Was it HTTPS"
+    },
+    {
+      "command": "proxy_http_version 1.1;",
+      "description": "WebSocket: plus the two headers below"
+    },
+    {
+      "command": "proxy_set_header Upgrade $http_upgrade;",
+      "description": "WebSocket upgrade"
+    },
+    {
+      "command": "proxy_set_header Connection \"upgrade\";",
+      "description": "WebSocket upgrade"
+    }
+  ],
+  "TLS & Security": [
+    {
+      "command": "certbot --nginx -d example.com",
+      "description": "Get and install a Let's Encrypt cert"
+    },
+    {
+      "command": "ssl_certificate /etc/letsencrypt/live/<d>/fullchain.pem;",
+      "description": "Certificate chain"
+    },
+    {
+      "command": "ssl_certificate_key /etc/letsencrypt/live/<d>/privkey.pem;",
+      "description": "Private key"
+    },
+    {
+      "command": "ssl_protocols TLSv1.2 TLSv1.3;",
+      "description": "Modern protocols only"
+    },
+    {
+      "command": "add_header Strict-Transport-Security \"max-age=31536000\" always;",
+      "description": "HSTS"
+    },
+    {
+      "command": "server_tokens off;",
+      "description": "Hide the nginx version"
+    }
+  ],
+  "Limits & Auth": [
+    {
+      "command": "client_max_body_size 50m;",
+      "description": "Max upload size (default 1m)"
+    },
+    {
+      "command": "limit_req_zone $binary_remote_addr zone=one:10m rate=10r/s;",
+      "description": "Rate limit zone (http block)"
+    },
+    {
+      "command": "limit_req zone=one burst=20 nodelay;",
+      "description": "Apply it in a location"
+    },
+    {
+      "command": "htpasswd -c /etc/nginx/.htpasswd <user>",
+      "description": "Create a password file (apache2-utils)"
+    },
+    {
+      "command": "auth_basic \"Private\";",
+      "description": "Enable basic auth..."
+    },
+    {
+      "command": "auth_basic_user_file /etc/nginx/.htpasswd;",
+      "description": "...with that file"
+    }
+  ]
+}

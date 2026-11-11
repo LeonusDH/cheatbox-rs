@@ -1,0 +1,166 @@
+{
+  "LOGO": [
+    {
+      "ascii": [
+        "",
+        "[orchid]   o o o o[/]",
+        "[orchid]  o o o o o[/]  [orchid]──>[/] [red]✗ ban[/]",
+        "[orchid]   o o o o[/]",
+        "[dim]  community blocklist[/]",
+        ""
+      ]
+    }
+  ],
+  "TITLE": [
+    {
+      "ascii": [
+        "   ______                       _______          ",
+        "  / ____/________ _      ______/ / ___/___  _____",
+        " / /   / ___/ __ \\ | /| / / __  /\\__ \\/ _ \\/ ___/",
+        "/ /___/ /  / /_/ / |/ |/ / /_/ /___/ /  __/ /__  ",
+        "\\____/_/   \\____/|__/|__/\\__,_//____/\\___/\\___/  "
+      ]
+    }
+  ],
+  "STYLE": {
+    "command_width": 34,
+    "outer_width": 150,
+    "primary_color": "orchid"
+  },
+  "Status": [
+    {
+      "command": "cscli metrics",
+      "description": "What is parsed, detected, blocked"
+    },
+    {
+      "command": "cscli lapi status",
+      "description": "Local API reachable"
+    },
+    {
+      "command": "cscli capi status",
+      "description": "Central API (community) connection"
+    },
+    {
+      "command": "cscli console enroll <key>",
+      "description": "Attach to app.crowdsec.net"
+    },
+    {
+      "command": "systemctl reload crowdsec",
+      "description": "Apply config / hub changes"
+    },
+    {
+      "command": "journalctl -u crowdsec -f",
+      "description": "Service logs"
+    }
+  ],
+  "Decisions (bans)": [
+    {
+      "command": "cscli decisions list",
+      "description": "Active local decisions"
+    },
+    {
+      "command": "cscli decisions list -a",
+      "description": "Including community blocklist"
+    },
+    {
+      "command": "cscli decisions add --ip <ip> --duration 24h --reason \"manual\"",
+      "description": "Ban an IP (default 4h)"
+    },
+    {
+      "command": "cscli decisions add --range 1.2.3.0/24 --type captcha",
+      "description": "Range, captcha instead of ban"
+    },
+    {
+      "command": "cscli decisions delete --ip <ip>",
+      "description": "Unban an IP"
+    },
+    {
+      "command": "cscli decisions import -i ips.txt --format values",
+      "description": "Bulk ban, one IP per line"
+    }
+  ],
+  "Alerts": [
+    {
+      "command": "cscli alerts list --since 1h",
+      "description": "Recent alerts"
+    },
+    {
+      "command": "cscli alerts list --ip <ip>",
+      "description": "Alerts for one IP"
+    },
+    {
+      "command": "cscli alerts inspect -d <id>",
+      "description": "Details with matched events"
+    },
+    {
+      "command": "cscli simulation enable <scenario>",
+      "description": "Detect but don't ban (dry run)"
+    }
+  ],
+  "Hub": [
+    {
+      "command": "cscli hub update",
+      "description": "Refresh the hub index"
+    },
+    {
+      "command": "cscli hub upgrade",
+      "description": "Upgrade installed parsers/scenarios"
+    },
+    {
+      "command": "cscli hub list",
+      "description": "Installed items (-a: everything)"
+    },
+    {
+      "command": "cscli collections install crowdsecurity/nginx",
+      "description": "Parsers + scenarios for a service"
+    },
+    {
+      "command": "cscli collections list",
+      "description": "Installed collections"
+    },
+    {
+      "command": "cscli scenarios list",
+      "description": "Installed detection scenarios"
+    }
+  ],
+  "Bouncers": [
+    {
+      "command": "cscli bouncers add <name>",
+      "description": "Register a bouncer, prints its API key"
+    },
+    {
+      "command": "cscli bouncers list",
+      "description": "Connected bouncers, last pull"
+    },
+    {
+      "command": "cscli bouncers delete <name>",
+      "description": "Remove a bouncer"
+    },
+    {
+      "command": "apt install crowdsec-firewall-bouncer-nftables",
+      "description": "Block at the firewall"
+    }
+  ],
+  "Allowlists & Debug": [
+    {
+      "command": "cscli allowlists create <name> -d \"description\"",
+      "description": "New allowlist (-d is required)"
+    },
+    {
+      "command": "cscli allowlists add <name> <ip|range> -e 7d -d \"why\"",
+      "description": "Never ban these (optional expiry)"
+    },
+    {
+      "command": "cscli allowlists inspect <name>",
+      "description": "Show an allowlist"
+    },
+    {
+      "command": "cscli explain --file /var/log/nginx/access.log --type nginx",
+      "description": "How log lines are parsed"
+    },
+    {
+      "command": "cscli metrics show acquisition",
+      "description": "Are logs being read at all"
+    }
+  ]
+}
